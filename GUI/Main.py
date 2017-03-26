@@ -34,14 +34,38 @@ class UpdateWatch(QtCore.QThread):
         while True:
             time.sleep(1)
             tic_seconds += 1
-            if tic_seconds == 59:
+            if tic_seconds > 59:
                 tic_seconds = 00
                 tic_minutes += 1
 
-            if tic_minutes == 59 and tic_seconds == 59:
+            if tic_minutes > 59:
+                tic_seconds = 00
+                tic_minutes = 00
                 tic_hours += 1
 
-            string_time = "%d:%d:%d" % (tic_hours, tic_minutes, tic_seconds)
+            # Put 0 behind number if less than 10
+            # Statement for seconds
+            if tic_seconds < 10:
+                tic_seconds_string = str("0%s" % tic_seconds)
+
+            else:
+                tic_seconds_string = str(tic_seconds)
+
+            # Statement for minutes
+            if tic_minutes < 10:
+                tic_minutes_string = str("0%s" % tic_minutes)
+
+            else:
+                tic_minutes_string = str(tic_minutes)
+
+            # Statement for hours
+            if tic_hours < 10:
+                tic_hours_string = str("0%s" % tic_hours)
+
+            else:
+                tic_hours_string = str(tic_hours)
+
+            string_time = "%s:%s:%s" % (tic_hours_string, tic_minutes_string, tic_seconds_string)
 
             self.updated.emit(str(string_time))
 
