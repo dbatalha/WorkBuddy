@@ -1,5 +1,6 @@
 from PyQt4 import QtCore, QtGui
 from Buddy import Work
+from Buddy import Collection
 import sys
 import os.path
 import time
@@ -94,9 +95,11 @@ class Window(QtGui.QMainWindow):
         font.setPointSize(20)
         self.label.setFont(font)
         self.label.setObjectName(_fromUtf8("label"))
-        self.last_work_days = QtGui.QTableView(self.centralwidget)
+        self.last_work_days = QtGui.QTableWidget(self.centralwidget)
         self.last_work_days.setGeometry(QtCore.QRect(0, 150, 671, 421))
         self.last_work_days.setObjectName(_fromUtf8("last_work_days"))
+        self.last_work_days.setColumnCount(0)
+        self.last_work_days.setRowCount(0)
         self.gridLayoutWidget_2 = QtGui.QWidget(self.centralwidget)
         self.gridLayoutWidget_2.setGeometry(QtCore.QRect(370, 0, 301, 121))
         self.gridLayoutWidget_2.setObjectName(_fromUtf8("gridLayoutWidget_2"))
@@ -154,7 +157,22 @@ class Window(QtGui.QMainWindow):
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
 
+        # Tables properties
+        self.last_work_days.setColumnCount(6)
+        self.last_work_days.setHorizontalHeaderItem(0, QtGui.QTableWidgetItem("Start"))
+        self.last_work_days.setHorizontalHeaderItem(1, QtGui.QTableWidgetItem("Lunch"))
+        self.last_work_days.setHorizontalHeaderItem(2, QtGui.QTableWidgetItem("Key"))
+        self.last_work_days.setHorizontalHeaderItem(3, QtGui.QTableWidgetItem("End"))
+        self.last_work_days.setHorizontalHeaderItem(4, QtGui.QTableWidgetItem("Total"))
+        self.last_work_days.setHorizontalHeaderItem(5, QtGui.QTableWidgetItem("Username"))
+
         self.ui_translate(self)
+
+        # Instance Collection
+        self.collection = Collection()
+
+        # Display data on table.
+        self.construct_data_grid()
 
         self.stage = "morning"
 
@@ -223,6 +241,11 @@ class Window(QtGui.QMainWindow):
 
     def update_text(self, text):
         self.label.setText(text)
+
+    def construct_data_grid(self):
+        print self.collection.get_all_data()
+        self.last_work_days.setRowCount(5)
+        self.last_work_days.setItem(1, 6, QtGui.QTableWidgetItem("Teste"))
 
     @ staticmethod
     def close_application():
