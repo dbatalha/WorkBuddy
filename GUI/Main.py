@@ -1,6 +1,7 @@
 from PyQt4 import QtCore, QtGui
 from Buddy import Work
 from Buddy import Collection
+from Buddy import Export
 import sys
 import os.path
 import time
@@ -200,6 +201,7 @@ class Window(QtGui.QMainWindow):
 
         # Set signals slots
         QtCore.QObject.connect(self.start, QtCore.SIGNAL(_fromUtf8("clicked()")), self.buddy_action)
+        QtCore.QObject.connect(self.export_xls, QtCore.SIGNAL(_fromUtf8("clicked()")), self.export)
         QtCore.QMetaObject.connectSlotsByName(self)
 
         self.start.clicked.connect(self._update_watch.start)
@@ -315,6 +317,11 @@ class Window(QtGui.QMainWindow):
             header.setResizeMode(0, QtGui.QHeaderView.ResizeToContents)
 
             row_counter += 1
+
+    @ staticmethod
+    def export():
+        export = Export()
+        export.export_csv()
 
     @ staticmethod
     def close_application():
