@@ -1,5 +1,7 @@
 from Database import Database
 
+__author__ = 'Daniel Batalha'
+
 
 class Collection(object):
     def __init__(self):

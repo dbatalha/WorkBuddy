@@ -43,7 +43,8 @@ class Connection(object):
         :return:
         """
         self.cursor.execute(statement)
-        data = self.cursor.fetchone()
+        # data = self.cursor.fetchone()
+        data = self.cursor.fetchall()
 
         return data
 

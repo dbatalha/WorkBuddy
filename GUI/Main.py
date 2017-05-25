@@ -161,7 +161,7 @@ class Window(QtGui.QMainWindow):
         self.last_work_days.setColumnCount(6)
         self.last_work_days.setHorizontalHeaderItem(0, QtGui.QTableWidgetItem("Start"))
         self.last_work_days.setHorizontalHeaderItem(1, QtGui.QTableWidgetItem("Lunch"))
-        self.last_work_days.setHorizontalHeaderItem(2, QtGui.QTableWidgetItem("Key"))
+        self.last_work_days.setHorizontalHeaderItem(2, QtGui.QTableWidgetItem("After Lunch"))
         self.last_work_days.setHorizontalHeaderItem(3, QtGui.QTableWidgetItem("End"))
         self.last_work_days.setHorizontalHeaderItem(4, QtGui.QTableWidgetItem("Total"))
         self.last_work_days.setHorizontalHeaderItem(5, QtGui.QTableWidgetItem("Username"))
@@ -243,9 +243,51 @@ class Window(QtGui.QMainWindow):
         self.label.setText(text)
 
     def construct_data_grid(self):
-        print self.collection.get_all_data()
-        self.last_work_days.setRowCount(5)
-        self.last_work_days.setItem(1, 6, QtGui.QTableWidgetItem("Teste"))
+        # Get all data from table buddy and convert to python object list.
+        all_data = self.collection.get_all_data()
+        all_data = list(all_data)
+
+        self.last_work_days.setRowCount(len(all_data))
+
+        row_counter = 0
+        for row in all_data:
+            print row[8]
+            print row[9]
+
+            # Add username to GUI table
+            self.last_work_days.setItem(row_counter, 5, QtGui.QTableWidgetItem(row[9]))
+
+            # Add Total, this value could be empty (None).
+            if row[8] is not None:
+                self.last_work_days.setItem(row_counter, 4, QtGui.QTableWidgetItem(row[8]))
+            else:
+                self.last_work_days.setItem(row_counter, 4, QtGui.QTableWidgetItem("EMPTY"))
+
+            # Add end work time in date format to GUI table.
+            if row[4] is not None:
+                self.last_work_days.setItem(row_counter, 3, QtGui.QTableWidgetItem(row[4]))
+            else:
+                self.last_work_days.setItem(row_counter, 3, QtGui.QTableWidgetItem("EMPTY"))
+
+            # Add after lunch time in date format to GUI table.
+            if row[6] is not None:
+                self.last_work_days.setItem(row_counter, 2, QtGui.QTableWidgetItem(row[6]))
+            else:
+                self.last_work_days.setItem(row_counter, 2, QtGui.QTableWidgetItem("EMPTY"))
+
+            # Add lunch time in date format to GUI table.
+            if row[2] is not None:
+                self.last_work_days.setItem(row_counter, 1, QtGui.QTableWidgetItem(row[2]))
+            else:
+                self.last_work_days.setItem(row_counter, 1, QtGui.QTableWidgetItem("EMPTY"))
+
+            # Add start work time in date format to GUI table.
+            if row[0] is not None:
+                self.last_work_days.setItem(row_counter, 0, QtGui.QTableWidgetItem(row[0]))
+            else:
+                self.last_work_days.setItem(row_counter, 0, QtGui.QTableWidgetItem("EMPTY"))
+
+            row_counter += 1
 
     @ staticmethod
     def close_application():
