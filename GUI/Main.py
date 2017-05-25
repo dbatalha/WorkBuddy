@@ -66,7 +66,8 @@ class UpdateWatch(QtCore.QThread):
             else:
                 tic_hours_string = str(tic_hours)
 
-            string_time = "%s:%s:%s" % (tic_hours_string, tic_minutes_string, tic_seconds_string)
+            string_time = "<html><head/><body><p align=\"center\">%s:%s:%s</p></body></html>" %\
+                          (tic_hours_string, tic_minutes_string, tic_seconds_string)
 
             self.updated.emit(str(string_time))
 
@@ -80,32 +81,40 @@ class Window(QtGui.QMainWindow):
 
         # Set main window object
         self.setObjectName(_fromUtf8("MainWindow"))
-        self.resize(673, 620)
+        self.resize(944, 663)
         self.centralwidget = QtGui.QWidget(self)
+        self.centralwidget.setMinimumSize(QtCore.QSize(944, 616))
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
+        self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.gridLayout = QtGui.QGridLayout()
+        self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
+        self.last_work_days = QtGui.QTableWidget(self.centralwidget)
+        self.last_work_days.setObjectName(_fromUtf8("last_work_days"))
+        self.last_work_days.setColumnCount(0)
+        self.last_work_days.setRowCount(0)
+        self.gridLayout.addWidget(self.last_work_days, 1, 0, 1, 2)
         self.groupBox = QtGui.QGroupBox(self.centralwidget)
-        self.groupBox.setGeometry(QtCore.QRect(0, 0, 359, 129))
+        self.groupBox.setMinimumSize(QtCore.QSize(0, 66))
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
+        self.gridLayout_3 = QtGui.QGridLayout(self.groupBox)
+        self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
         self.start = QtGui.QPushButton(self.groupBox)
-        self.start.setGeometry(QtCore.QRect(20, 50, 163, 31))
         self.start.setObjectName(_fromUtf8("start"))
+        self.gridLayout_3.addWidget(self.start, 0, 0, 1, 1)
         self.label = QtGui.QLabel(self.groupBox)
-        self.label.setGeometry(QtCore.QRect(200, 0, 246, 129))
         font = QtGui.QFont()
         font.setPointSize(20)
         self.label.setFont(font)
         self.label.setObjectName(_fromUtf8("label"))
-        self.last_work_days = QtGui.QTableWidget(self.centralwidget)
-        self.last_work_days.setGeometry(QtCore.QRect(0, 150, 671, 421))
-        self.last_work_days.setObjectName(_fromUtf8("last_work_days"))
-        self.last_work_days.setColumnCount(0)
-        self.last_work_days.setRowCount(0)
-        self.gridLayoutWidget_2 = QtGui.QWidget(self.centralwidget)
-        self.gridLayoutWidget_2.setGeometry(QtCore.QRect(370, 0, 301, 121))
-        self.gridLayoutWidget_2.setObjectName(_fromUtf8("gridLayoutWidget_2"))
-        self.gridLayout_2 = QtGui.QGridLayout(self.gridLayoutWidget_2)
+        self.gridLayout_3.addWidget(self.label, 0, 1, 1, 1)
+        self.start.raise_()
+        self.label.raise_()
+        self.last_work_days.raise_()
+        self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
+        self.gridLayout_2 = QtGui.QGridLayout()
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
-        self.export_xls = QtGui.QPushButton(self.gridLayoutWidget_2)
+        self.export_xls = QtGui.QPushButton(self.centralwidget)
         self.export_xls.setText(_fromUtf8(""))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("GUI/Icons/Mimes-x-office-spreadsheet-icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -113,7 +122,7 @@ class Window(QtGui.QMainWindow):
         self.export_xls.setIconSize(QtCore.QSize(48, 48))
         self.export_xls.setObjectName(_fromUtf8("export_xls"))
         self.gridLayout_2.addWidget(self.export_xls, 0, 1, 1, 1)
-        self.refress_work_days = QtGui.QPushButton(self.gridLayoutWidget_2)
+        self.refress_work_days = QtGui.QPushButton(self.centralwidget)
         self.refress_work_days.setText(_fromUtf8(""))
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8("GUI/Icons/Actions-edit-redo-icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -121,7 +130,7 @@ class Window(QtGui.QMainWindow):
         self.refress_work_days.setIconSize(QtCore.QSize(48, 48))
         self.refress_work_days.setObjectName(_fromUtf8("refress_work_days"))
         self.gridLayout_2.addWidget(self.refress_work_days, 0, 2, 1, 1)
-        self.pushButton = QtGui.QPushButton(self.gridLayoutWidget_2)
+        self.pushButton = QtGui.QPushButton(self.centralwidget)
         self.pushButton.setText(_fromUtf8(""))
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(_fromUtf8("GUI/Icons/Actions-edit-delete-icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -129,9 +138,14 @@ class Window(QtGui.QMainWindow):
         self.pushButton.setIconSize(QtCore.QSize(48, 48))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.gridLayout_2.addWidget(self.pushButton, 0, 3, 1, 1)
+        self.gridLayout.addLayout(self.gridLayout_2, 0, 1, 1, 1)
+        self.verticalLayout.addLayout(self.gridLayout)
+        self.label.raise_()
+        self.label.raise_()
+        self.last_work_days.raise_()
         self.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(self)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 673, 27))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 944, 27))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -196,11 +210,15 @@ class Window(QtGui.QMainWindow):
         # Buddy main instance
         self.buddy_main = Work()
 
+        # Write data to status bar, this is the database file and file size.
+        self.statusbar.showMessage("Click on button Start Day")
+
     def ui_translate(self, main_window):
         main_window.setWindowTitle(_translate("WorkBuddy", "WorkBuddy", None))
         self.groupBox.setTitle(_translate("MainWindow", "WorkTime", None))
         self.start.setText(_translate("MainWindow", "Start Day", None))
-        self.label.setText(_translate("MainWindow", "HH:MM:SS", None))
+        self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">HH:MM:SS</p></body></html>",
+                                      None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
         self.menuHelp.setTitle(_translate("MainWindow", "Help", None))
         self.actionExport.setText(_translate("MainWindow", "Export", None))
@@ -214,16 +232,19 @@ class Window(QtGui.QMainWindow):
                 self.buddy_main.create_data()
 
             self.buddy_main.start()
+            self.statusbar.showMessage("Currently on morning shift")
 
             self.start.setText("Launch")
 
         elif self.buddy_main.state() == "Started":
             self.buddy_main.launch()
+            self.statusbar.showMessage("Finally lunch time")
 
             self.start.setText("Start After Launch")
 
         elif self.buddy_main.state() == "Launch":
             self.buddy_main.return_from_launch()
+            self.statusbar.showMessage("Currently on afternoon shift")
 
             self.start.setText("End Day")
 
@@ -234,7 +255,8 @@ class Window(QtGui.QMainWindow):
 
             self._update_watch.terminate()
 
-            self.label.setText("HH:MM:SS")
+            self.label.setText("<html><head/><body><p align=\"center\">HH:MM:SS</p></body></html>")
+            self.statusbar.showMessage("Click on button Start Day")
 
         else:
             raise ValueError("Invalid Option")
@@ -251,41 +273,46 @@ class Window(QtGui.QMainWindow):
 
         row_counter = 0
         for row in all_data:
-            print row[8]
-            print row[9]
+            header = self.last_work_days.horizontalHeader()
 
             # Add username to GUI table
             self.last_work_days.setItem(row_counter, 5, QtGui.QTableWidgetItem(row[9]))
+            header.setResizeMode(5, QtGui.QHeaderView.ResizeToContents)
 
             # Add Total, this value could be empty (None).
             if row[8] is not None:
                 self.last_work_days.setItem(row_counter, 4, QtGui.QTableWidgetItem(row[8]))
             else:
                 self.last_work_days.setItem(row_counter, 4, QtGui.QTableWidgetItem("EMPTY"))
+            header.setResizeMode(4, QtGui.QHeaderView.ResizeToContents)
 
             # Add end work time in date format to GUI table.
             if row[4] is not None:
                 self.last_work_days.setItem(row_counter, 3, QtGui.QTableWidgetItem(row[4]))
             else:
                 self.last_work_days.setItem(row_counter, 3, QtGui.QTableWidgetItem("EMPTY"))
+            header.setResizeMode(3, QtGui.QHeaderView.ResizeToContents)
 
             # Add after lunch time in date format to GUI table.
             if row[6] is not None:
                 self.last_work_days.setItem(row_counter, 2, QtGui.QTableWidgetItem(row[6]))
             else:
                 self.last_work_days.setItem(row_counter, 2, QtGui.QTableWidgetItem("EMPTY"))
+            header.setResizeMode(2, QtGui.QHeaderView.ResizeToContents)
 
             # Add lunch time in date format to GUI table.
             if row[2] is not None:
                 self.last_work_days.setItem(row_counter, 1, QtGui.QTableWidgetItem(row[2]))
             else:
                 self.last_work_days.setItem(row_counter, 1, QtGui.QTableWidgetItem("EMPTY"))
+            header.setResizeMode(1, QtGui.QHeaderView.ResizeToContents)
 
             # Add start work time in date format to GUI table.
             if row[0] is not None:
                 self.last_work_days.setItem(row_counter, 0, QtGui.QTableWidgetItem(row[0]))
             else:
                 self.last_work_days.setItem(row_counter, 0, QtGui.QTableWidgetItem("EMPTY"))
+            header.setResizeMode(0, QtGui.QHeaderView.ResizeToContents)
 
             row_counter += 1
 
