@@ -28,6 +28,13 @@ __author__ = 'Daniel Batalha'
 class UpdateWatch(QtCore.QThread):
     updated = QtCore.pyqtSignal(str)
 
+    def __init__(self, parent=None):
+        super(UpdateWatch, self).__init__(parent)
+        self.loop_status = True
+
+    def update_watch_status(self, status):
+        self.loop_status = status
+
     def run(self):
         tic_seconds = 00
         tic_minutes = 00
@@ -66,6 +73,11 @@ class UpdateWatch(QtCore.QThread):
 
             else:
                 tic_hours_string = str(tic_hours)
+
+            if self.loop_status is False:
+                break
+            else:
+                pass
 
             string_time = "<html><head/><body><p align=\"center\">%s:%s:%s</p></body></html>" %\
                           (tic_hours_string, tic_minutes_string, tic_seconds_string)
@@ -257,6 +269,7 @@ class Window(QtGui.QMainWindow):
 
             self._update_watch.terminate()
 
+            self._update_watch.update_watch_status(False)
             self.label.setText("<html><head/><body><p align=\"center\">HH:MM:SS</p></body></html>")
             self.statusbar.showMessage("Click on button Start Day")
 
