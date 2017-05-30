@@ -121,6 +121,7 @@ class Window(QtGui.QMainWindow, ModelWindow):
         # Set signals slots
         QtCore.QObject.connect(self.start, QtCore.SIGNAL(_fromUtf8("clicked()")), self.buddy_action)
         QtCore.QObject.connect(self.export_xls, QtCore.SIGNAL(_fromUtf8("clicked()")), self.export)
+        QtCore.QObject.connect(self.refress_work_days, QtCore.SIGNAL(_fromUtf8("clicked()")), self.update_table)
         QtCore.QMetaObject.connectSlotsByName(self)
 
         self.start.clicked.connect(self._update_watch.start)
@@ -172,6 +173,26 @@ class Window(QtGui.QMainWindow, ModelWindow):
 
         else:
             raise ValueError("Invalid Option")
+
+    def update_table(self):
+        """
+        Update work log table
+        :return:
+        """
+        self.clear_table()
+
+        # Instance Collection
+        self.collection = Collection()
+
+        # Display data on table.
+        self.construct_data_grid()
+
+    def clear_table(self):
+        """
+        Clear work log table
+        :return:
+        """
+        self.last_work_days.clearContents()
 
     def update_text(self, text):
         self.label.setText(text)
