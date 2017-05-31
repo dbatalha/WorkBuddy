@@ -2,6 +2,7 @@ from PyQt4 import QtCore, QtGui
 from Buddy import Work
 from Buddy import Collection
 from Buddy import Export
+from About import About
 from ModelMain import ModelWindow
 import sys
 import os.path
@@ -128,6 +129,7 @@ class Window(QtGui.QMainWindow, ModelWindow):
 
         # Main menu items
         self.actionExit.triggered.connect(self.close_application)
+        self.actionAbout.triggered.connect(self.display_about)
 
         # Buddy main instance
         self.buddy_main = Work()
@@ -248,6 +250,11 @@ class Window(QtGui.QMainWindow, ModelWindow):
             header.setResizeMode(0, QtGui.QHeaderView.ResizeToContents)
 
             row_counter += 1
+
+    @ staticmethod
+    def display_about():
+        about = About()
+        about.exec_()
 
     @ staticmethod
     def export():
