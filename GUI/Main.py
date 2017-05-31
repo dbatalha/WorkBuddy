@@ -130,6 +130,7 @@ class Window(QtGui.QMainWindow, ModelWindow):
         # Main menu items
         self.actionExit.triggered.connect(self.close_application)
         self.actionAbout.triggered.connect(self.display_about)
+        self.actionExport.triggered.connect(self.export)
 
         # Buddy main instance
         self.buddy_main = Work()
