@@ -156,6 +156,7 @@ class Window(QtGui.QMainWindow, ModelWindow):
                 self.buddy_main.create_data()
 
             self.buddy_main.start()
+            self._update_watch.update_watch_status(True)
             self.statusbar.showMessage("Currently on morning shift")
 
             self.start.setText("Launch")
