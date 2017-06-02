@@ -33,9 +33,13 @@ class UpdateWatch(QtCore.QThread):
     def __init__(self, parent=None):
         super(UpdateWatch, self).__init__(parent)
         self.loop_status = True
+        self.running = True
 
     def update_watch_status(self, status):
         self.loop_status = status
+
+    def pause_watch(self, status):
+        self.running = bool(status)
 
     def run(self):
         tic_seconds = 00
@@ -44,7 +48,12 @@ class UpdateWatch(QtCore.QThread):
 
         while True:
             time.sleep(1)
-            tic_seconds += 1
+
+            if self.running is True:
+                tic_seconds += 1
+            else:
+                pass
+
             if tic_seconds > 59:
                 tic_seconds = 00
                 tic_minutes += 1
@@ -152,13 +161,16 @@ class Window(QtGui.QMainWindow, ModelWindow):
             self.start.setText("Launch")
 
         elif self.buddy_main.state() == "Started":
+
             self.buddy_main.launch()
+            self._update_watch.pause_watch(False)
             self.statusbar.showMessage("Finally lunch time")
 
             self.start.setText("Start After Launch")
 
         elif self.buddy_main.state() == "Launch":
             self.buddy_main.return_from_launch()
+            self._update_watch.pause_watch(True)
             self.statusbar.showMessage("Currently on afternoon shift")
 
             self.start.setText("End Day")
