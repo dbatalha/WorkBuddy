@@ -3,6 +3,7 @@ from Buddy import Work
 from Buddy import Collection
 from Buddy import Export
 from About import About
+from Warning import Warning
 from ModelMain import ModelWindow
 import sys
 import os.path
@@ -279,3 +280,11 @@ class Window(QtGui.QMainWindow, ModelWindow):
     def close_application():
         sys.exit()
 
+    def closeEvent(self, event):
+        warning = Warning("Are you sure you want to exit ?")
+        warning.exec_()
+
+        event.ignore()
+
+        if warning.event_action is True:
+            event.accept()
