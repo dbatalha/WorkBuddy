@@ -21,13 +21,16 @@ __author__ = 'Daniel Batalha'
 
 class ModelAbout(object):
     def __init__(self):
-        self.setObjectName(_fromUtf8("About WorkBuddy"))
+        self.setObjectName(_fromUtf8("Dialog"))
         self.resize(400, 229)
         self.setMaximumSize(QtCore.QSize(400, 229))
-        # self.setSizeGripEnabled(True)
-        # self.setModal(False)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("GUI/Icons/main.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setWindowIcon(icon)
+        self.setSizeGripEnabled(True)
+        self.setModal(False)
         self.pushButton = QtGui.QPushButton(self)
-        self.pushButton.setGeometry(QtCore.QRect(310, 190, 90, 31))
+        self.pushButton.setGeometry(QtCore.QRect(300, 190, 90, 31))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.line = QtGui.QFrame(self)
         self.line.setGeometry(QtCore.QRect(0, 170, 401, 16))
@@ -41,11 +44,11 @@ class ModelAbout(object):
         self.logo.setPixmap(QtGui.QPixmap(_fromUtf8("GUI/Icons/main.png")))
         self.logo.setObjectName(_fromUtf8("logo"))
         self.title = QtGui.QLabel(self)
-        self.title.setGeometry(QtCore.QRect(120, 30, 231, 16))
+        self.title.setGeometry(QtCore.QRect(110, 30, 231, 31))
         self.title.setTextFormat(QtCore.Qt.RichText)
         self.title.setObjectName(_fromUtf8("title"))
         self.description = QtGui.QLabel(self)
-        self.description.setGeometry(QtCore.QRect(120, 70, 211, 51))
+        self.description.setGeometry(QtCore.QRect(110, 70, 211, 51))
         self.description.setObjectName(_fromUtf8("description"))
         self.label = QtGui.QLabel(self)
         self.label.setGeometry(QtCore.QRect(30, 150, 271, 16))
@@ -57,10 +60,8 @@ class ModelAbout(object):
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "About WorkBuddy", None))
         self.pushButton.setText(_translate("Dialog", "OK", None))
-        self.title.setText(_translate("Dialog",
-                                      "<html><head/><body><p><span style=\" font-size:11pt; font-weight:600;\">WorkBuddy Version V0.0.4</span></p></body></html>",
-                                      None))
+        self.title.setText(_translate("Dialog", "<html><head/><body><p><span style=\" font-size:11pt; font-weight:600;\">WorkBuddy Version V0.0.4</span></p></body></html>", None))
         self.description.setText(_translate("Dialog", " Keep track of your work hours. \n"
-                                                      " WorkBuddy sores your data locally on your own \n"
-                                                      " hard drive.", None))
+" WorkBuddy sores your data locally on your own \n"
+" hard drive.", None))
         self.label.setText(_translate("Dialog", "Open Source Software @ Daniel Batalha", None))

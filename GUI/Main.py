@@ -280,8 +280,33 @@ class Window(QtGui.QMainWindow, ModelWindow):
     def close_application():
         sys.exit()
 
+    def changeEvent(self, event):
+        """
+        This function get the minimize event.
+        :param event:
+        :return:
+        """
+        # Get the main window state event.
+        if event.type() == QtCore.QEvent.WindowStateChange:
+            if self.windowState() == QtCore.Qt.WindowMinimized:
+                print("Window is minimized")
+                # self.setVisible(False)
+                # system_tray_application = QtGui.QApplication(sys.argv)
+
+                # tray_icon = QtGui.QSystemTrayIcon(QtGui.QIcon("GUI/Icons/main.png"), system_tray_application)
+                # context = QtGui.QMenu()
+                # exit_action = context.addAction("Quit")
+                # tray_icon.setContextMenu(context)
+
+                # tray_icon.show()
+                # sys.exit(system_tray_application.exec_())
+
     def closeEvent(self, event):
-        warning = Warning("Are you sure you want to exit ?")
+        warning = Warning(
+                          "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">"
+                          "Close WorkBuddy ?"
+                          "</span></p></body></html>"
+                          )
         warning.exec_()
 
         event.ignore()
