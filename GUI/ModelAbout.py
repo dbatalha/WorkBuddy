@@ -60,7 +60,7 @@ class ModelAbout(object):
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "About WorkBuddy", None))
         self.pushButton.setText(_translate("Dialog", "OK", None))
-        self.title.setText(_translate("Dialog", "<html><head/><body><p><span style=\" font-size:11pt; font-weight:600;\">WorkBuddy Version V0.0.4</span></p></body></html>", None))
+        self.title.setText(_translate("Dialog", "<html><head/><body><p><span style=\" font-size:11pt; font-weight:600;\">WorkBuddy Version V0.0.5</span></p></body></html>", None))
         self.description.setText(_translate("Dialog", " Keep track of your work hours. \n"
 " WorkBuddy sores your data locally on your own \n"
 " hard drive.", None))

@@ -28,6 +28,27 @@ except AttributeError:
 __author__ = 'Daniel Batalha'
 
 
+class TrayIcon(QtGui.QSystemTrayIcon):
+    def __init__(self, icon, parent=None):
+        QtGui.QSystemTrayIcon.__init__(self, icon, parent)
+        context_menu = QtGui.QMenu(parent)
+        restore_action = context_menu.addAction("Restore")
+        self.setContextMenu(context_menu)
+        self.restore_trigger = False
+        restore_action.triggered.connect(self.restore)
+
+        # Activate window, on double click
+        self.activated.connect(self.restore)
+
+        # Define parent window
+        self.parent_window = parent
+
+    def restore(self):
+        self.restore_trigger = True
+        self.parent_window.show()
+        self.hide()
+
+
 class UpdateWatch(QtCore.QThread):
     updated = QtCore.pyqtSignal(str)
 
@@ -148,6 +169,12 @@ class Window(QtGui.QMainWindow, ModelWindow):
         # Write data to status bar, this is the database file and file size.
         self.statusbar.showMessage("Click on button Start Day")
 
+        # Tray icon application
+        self.tray_icon = None
+
+        # Initialize the context menu for QWidget table.
+        self.context_menu = None
+
     def ui_translate(self, main_window):
         ModelWindow.ui_translate(self, main_window)
 
@@ -266,6 +293,21 @@ class Window(QtGui.QMainWindow, ModelWindow):
 
             row_counter += 1
 
+    def contextMenuEvent(self, event):
+        self.context_menu = QtGui.QMenu(self)
+        action_rename = QtGui.QAction('SetDate', self)
+        action_rename.triggered.connect(lambda: self.define_date(event))
+        self.context_menu.addAction(action_rename)
+        self.context_menu.popup(QtGui.QCursor.pos())
+
+    def define_date(self, event):
+        row = self.last_work_days.rowAt(int(event.pos().y()))
+        column = self.last_work_days.columnAt(int(event.pos().x()))
+
+        current_value = self.last_work_days.item(row, column)
+        print current_value
+        print self.last_work_days.item(int(event.pos().y()), int(event.pos().x()))
+
     @ staticmethod
     def display_about():
         about = About()
@@ -289,17 +331,12 @@ class Window(QtGui.QMainWindow, ModelWindow):
         # Get the main window state event.
         if event.type() == QtCore.QEvent.WindowStateChange:
             if self.windowState() == QtCore.Qt.WindowMinimized:
-                print("Window is minimized")
-                # self.setVisible(False)
-                # system_tray_application = QtGui.QApplication(sys.argv)
+                self.hide()
 
-                # tray_icon = QtGui.QSystemTrayIcon(QtGui.QIcon("GUI/Icons/main.png"), system_tray_application)
-                # context = QtGui.QMenu()
-                # exit_action = context.addAction("Quit")
-                # tray_icon.setContextMenu(context)
-
-                # tray_icon.show()
-                # sys.exit(system_tray_application.exec_())
+                self.tray_icon = TrayIcon(QtGui.QIcon("GUI/Icons/main.png"), self)
+                self.tray_icon.show()
+                self.tray_icon.showMessage("WorkBuddy is running in background!",
+                                           "Double click on Icon to activate the Window.")
 
     def closeEvent(self, event):
         warning = Warning(
