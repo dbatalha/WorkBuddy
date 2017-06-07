@@ -22,17 +22,17 @@ __author__ = 'Daniel Batalha'
 class ModelWarning(object):
     def __init__(self):
         self.setObjectName(_fromUtf8("Dialog"))
-        self.resize(400, 175)
-        self.setMinimumSize(QtCore.QSize(400, 175))
-        self.setMaximumSize(QtCore.QSize(400, 175))
-        self.setBaseSize(QtCore.QSize(400, 175))
+        self.resize(370, 140)
+        self.setMinimumSize(QtCore.QSize(370, 140))
+        self.setMaximumSize(QtCore.QSize(370, 140))
+        self.setBaseSize(QtCore.QSize(370, 140))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("GUI/Icons/Status-dialog-warning-icon.png")), QtGui.QIcon.Normal,
                        QtGui.QIcon.Off)
         self.setWindowIcon(icon)
         self.setSizeGripEnabled(True)
         self.buttonBox = QtGui.QDialogButtonBox(self)
-        self.buttonBox.setGeometry(QtCore.QRect(30, 120, 341, 32))
+        self.buttonBox.setGeometry(QtCore.QRect(20, 100, 341, 32))
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel | QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
@@ -42,7 +42,7 @@ class ModelWarning(object):
         self.warning.setPixmap(QtGui.QPixmap(_fromUtf8("GUI/Icons/Status-dialog-warning-icon.png")))
         self.warning.setObjectName(_fromUtf8("warning"))
         self.message = QtGui.QLabel(self)
-        self.message.setGeometry(QtCore.QRect(130, 50, 211, 21))
+        self.message.setGeometry(QtCore.QRect(110, 50, 211, 21))
         self.message.setObjectName(_fromUtf8("message"))
 
         self.retranslateUi(self)
