@@ -124,6 +124,8 @@ class Window(QtGui.QMainWindow, ModelWindow):
         ModelWindow.__init__(self)
 
         # Tables properties
+        self.last_work_days.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.last_work_days.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.last_work_days.setColumnCount(6)
         self.last_work_days.setHorizontalHeaderItem(0, QtGui.QTableWidgetItem("Start"))
         self.last_work_days.setHorizontalHeaderItem(1, QtGui.QTableWidgetItem("Lunch"))
@@ -296,17 +298,12 @@ class Window(QtGui.QMainWindow, ModelWindow):
     def contextMenuEvent(self, event):
         self.context_menu = QtGui.QMenu(self)
         action_rename = QtGui.QAction('SetDate', self)
-        action_rename.triggered.connect(lambda: self.define_date(event))
+        action_rename.triggered.connect(self.define_date)
         self.context_menu.addAction(action_rename)
         self.context_menu.popup(QtGui.QCursor.pos())
 
-    def define_date(self, event):
-        row = self.last_work_days.rowAt(int(event.pos().y()))
-        column = self.last_work_days.columnAt(int(event.pos().x()))
-
-        current_value = self.last_work_days.item(row, column)
-        print current_value
-        print self.last_work_days.item(int(event.pos().y()), int(event.pos().x()))
+    def define_date(self):
+        print self.last_work_days.item(self.last_work_days.currentRow(), 0).text()
 
     @ staticmethod
     def display_about():
