@@ -4,6 +4,7 @@ from Buddy import Collection
 from Buddy import Export
 from About import About
 from Warning import Warning
+from Edit import Edit
 from ModelMain import ModelWindow
 import sys
 import os.path
@@ -303,7 +304,12 @@ class Window(QtGui.QMainWindow, ModelWindow):
         self.context_menu.popup(QtGui.QCursor.pos())
 
     def define_date(self):
-        print self.last_work_days.item(self.last_work_days.currentRow(), 0).text()
+        day_hours = list()
+        for header in range(0, 4):
+            day_hours.append(self.last_work_days.item(self.last_work_days.currentRow(), header).text())
+
+        edit = Edit(day_hours)
+        edit.exec_()
 
     @ staticmethod
     def display_about():
