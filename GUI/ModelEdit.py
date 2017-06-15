@@ -21,7 +21,7 @@ __author__ = 'Daniel Batalha'
 
 class ModelEdit(object):
     def __init__(self):
-        self.setObjectName(_fromUtf8("Dialog"))
+        self.setObjectName(_fromUtf8("Edit Work Day Hours"))
         self.resize(1161, 213)
         self.setMinimumSize(QtCore.QSize(1161, 213))
         self.setMaximumSize(QtCore.QSize(1161, 213))
