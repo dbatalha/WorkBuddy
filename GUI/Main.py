@@ -323,7 +323,16 @@ class Window(QtGui.QMainWindow, ModelWindow):
 
     @ staticmethod
     def close_application():
-        sys.exit()
+        # TODO: Implement a better way to close the application when changeEvent was triggered without event object
+        warning = Warning(
+                          "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">"
+                          "Close WorkBuddy ?"
+                          "</span></p></body></html>"
+                          )
+        warning.exec_()
+
+        if warning.event_action is True:
+            sys.exit()
 
     def changeEvent(self, event):
         """
