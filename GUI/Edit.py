@@ -52,6 +52,12 @@ class Edit(QtGui.QDialog, ModelEdit):
         else:
             self.end_group_box.setEnabled(False)
 
+        # Define time to set
+        self.start_time = None
+        self.lunch_time = None
+        self.after_lunch_time = None
+        self.end_time = None
+
         # Set signals to define time.
         QtCore.QObject.connect(self.set_start, QtCore.SIGNAL(_fromUtf8("clicked()")), self.set_start_time)
         QtCore.QObject.connect(self.set_lunch, QtCore.SIGNAL(_fromUtf8("clicked()")), self.set_lunch_time)
@@ -59,7 +65,7 @@ class Edit(QtGui.QDialog, ModelEdit):
         QtCore.QObject.connect(self.set_end_day, QtCore.SIGNAL(_fromUtf8("clicked()")), self.set_end_time)
 
         self.retranslateUi(self)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), self.accept)
+        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), self.submit)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), self.reject)
         QtCore.QMetaObject.connectSlotsByName(self)
 
@@ -77,7 +83,7 @@ class Edit(QtGui.QDialog, ModelEdit):
         if seconds_value < 10:
             seconds_value = "0" + str(seconds_value)
 
-        print "Start time is: %s:%s:%s" % (hour_value, minute_value, seconds_value)
+        self.start_time = "%s:%s:%s" % (hour_value, minute_value, seconds_value)
 
     def set_lunch_time(self):
         hour_value = self.lunch_hour.value()
@@ -93,7 +99,7 @@ class Edit(QtGui.QDialog, ModelEdit):
         if seconds_value < 10:
             seconds_value = "0" + str(seconds_value)
 
-        print "Lunch time is: %s:%s:%s" % (hour_value, minute_value, seconds_value)
+        self.lunch_time = "%s:%s:%s" % (hour_value, minute_value, seconds_value)
 
     def set_after_lunch_time(self):
         hour_value = self.after_lunch_hour.value()
@@ -109,7 +115,7 @@ class Edit(QtGui.QDialog, ModelEdit):
         if seconds_value < 10:
             seconds_value = "0" + str(seconds_value)
 
-        print "After Lunch time is: %s:%s:%s" % (hour_value, minute_value, seconds_value)
+        self.after_lunch_time = "%s:%s:%s" % (hour_value, minute_value, seconds_value)
 
     def set_end_time(self):
         hour_value = self.end_hour.value()
@@ -125,7 +131,28 @@ class Edit(QtGui.QDialog, ModelEdit):
         if seconds_value < 10:
             seconds_value = "0" + str(seconds_value)
 
-        print "End time is: %s:%s:%s" % (hour_value, minute_value, seconds_value)
+        self.end_time = "%s:%s:%s" % (hour_value, minute_value, seconds_value)
+
+    def submit(self):
+        print self.start_time
+        print self.lunch_time
+        print self.after_lunch_time
+        print self.end_time
+
+        if self.start_time is not None:
+            print "do stuff1"
+
+        if self.lunch_time is not None:
+            print "do Stuff2"
+
+        if self.after_lunch_time is not None:
+            print "do Stuff3"
+
+        if self.end_time is not None:
+            print "do Stuff4"
+
+        # Close the dialog window
+        self.accept()
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Edit Work Day Hours", None))

@@ -128,6 +128,7 @@ class Window(QtGui.QMainWindow, ModelWindow):
         self.last_work_days.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
         self.last_work_days.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.last_work_days.setColumnCount(6)
+        self.last_work_days.verticalHeader().setVisible(False)
         self.last_work_days.setHorizontalHeaderItem(0, QtGui.QTableWidgetItem("Start"))
         self.last_work_days.setHorizontalHeaderItem(1, QtGui.QTableWidgetItem("Lunch"))
         self.last_work_days.setHorizontalHeaderItem(2, QtGui.QTableWidgetItem("After Lunch"))
@@ -149,6 +150,12 @@ class Window(QtGui.QMainWindow, ModelWindow):
             self.construct_data_grid()
         else:
             self.file_exist = True
+
+        # TODO: Workaround to verify if sqlite file exist.
+        try:
+            self.update_table()
+        except Exception:
+            pass
 
         self._update_watch = UpdateWatch(self)
         self._update_watch.updated.connect(self.update_text)
@@ -298,8 +305,10 @@ class Window(QtGui.QMainWindow, ModelWindow):
     def contextMenuEvent(self, event):
         self.context_menu = QtGui.QMenu(self)
         action_rename = QtGui.QAction('SetDate', self)
+        action_tasks = QtGui.QAction('AddTasks', self)
         action_rename.triggered.connect(self.define_date)
         self.context_menu.addAction(action_rename)
+        self.context_menu.addAction(action_tasks)
         self.context_menu.popup(QtGui.QCursor.pos())
 
     def define_date(self):
