@@ -17,9 +17,9 @@ class Work(object):
         self.start_day_time = None
 
     def create_data(self):
-        self.database.create("CREATE TABLE buddy (StartWorkTime, StartWorkEpoch INT, LunchTime, LunchTimeEpoch INT,"
-                             " EndWorkTime, EndWorkEpoch INT, StartAfterLunch, StartAfterLunchEpoch INT, Total,"
-                             " Username)")
+        self.database.create("CREATE TABLE IF NOT EXISTS buddy (Id INTEGER PRIMARY KEY AUTOINCREMENT, StartWorkTime,"
+                             " StartWorkEpoch INT, LunchTime, LunchTimeEpoch INT, EndWorkTime, EndWorkEpoch INT, "
+                             "StartAfterLunch, StartAfterLunchEpoch INT, Total, Username, Tasks)")
 
     def state(self):
         return self.state_machine_instance.get_state()
