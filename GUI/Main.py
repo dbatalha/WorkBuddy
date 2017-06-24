@@ -127,7 +127,7 @@ class Window(QtGui.QMainWindow, ModelWindow):
         # Tables properties
         self.last_work_days.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
         self.last_work_days.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
-        self.last_work_days.setColumnCount(6)
+        self.last_work_days.setColumnCount(8)
         self.last_work_days.verticalHeader().setVisible(False)
         self.last_work_days.setHorizontalHeaderItem(0, QtGui.QTableWidgetItem("Start"))
         self.last_work_days.setHorizontalHeaderItem(1, QtGui.QTableWidgetItem("Lunch"))
@@ -135,6 +135,10 @@ class Window(QtGui.QMainWindow, ModelWindow):
         self.last_work_days.setHorizontalHeaderItem(3, QtGui.QTableWidgetItem("End"))
         self.last_work_days.setHorizontalHeaderItem(4, QtGui.QTableWidgetItem("Total"))
         self.last_work_days.setHorizontalHeaderItem(5, QtGui.QTableWidgetItem("Username"))
+        self.last_work_days.setHorizontalHeaderItem(6, QtGui.QTableWidgetItem("Tasks"))
+        self.last_work_days.setHorizontalHeaderItem(7, QtGui.QTableWidgetItem("ID"))
+
+        self.last_work_days.hideColumn(7)
 
         self.ui_translate(self)
 
@@ -261,6 +265,10 @@ class Window(QtGui.QMainWindow, ModelWindow):
         for row in all_data:
             header = self.last_work_days.horizontalHeader()
 
+            # Add ID to GUI table
+            self.last_work_days.setItem(row_counter, 7, QtGui.QTableWidgetItem(str(row[0])))
+            header.setResizeMode(7, QtGui.QHeaderView.ResizeToContents)
+
             # Add username to GUI table
             self.last_work_days.setItem(row_counter, 5, QtGui.QTableWidgetItem(row[10]))
             header.setResizeMode(5, QtGui.QHeaderView.ResizeToContents)
@@ -315,6 +323,8 @@ class Window(QtGui.QMainWindow, ModelWindow):
         day_hours = list()
         for header in range(0, 4):
             day_hours.append(self.last_work_days.item(self.last_work_days.currentRow(), header).text())
+
+        day_hours.append(self.last_work_days.item(self.last_work_days.currentRow(), 7).text())
 
         edit = Edit(day_hours)
         edit.exec_()

@@ -1,5 +1,6 @@
 from PyQt4 import QtCore, QtGui
 from ModelEdit import ModelEdit
+from Database import Database
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -29,6 +30,11 @@ class Edit(QtGui.QDialog, ModelEdit):
         time_lunch = day_hours[1]
         time_after_lunch = day_hours[2]
         time_end = day_hours[3]
+
+        row_id = day_hours[4]
+        print row_id
+
+        self.database = Database()
 
         if time_start == "EMPTY":
             self.start_group_box.setEnabled(True)
@@ -134,11 +140,6 @@ class Edit(QtGui.QDialog, ModelEdit):
         self.end_time = "%s:%s:%s" % (hour_value, minute_value, seconds_value)
 
     def submit(self):
-        print self.start_time
-        print self.lunch_time
-        print self.after_lunch_time
-        print self.end_time
-
         if self.start_time is not None:
             print "do stuff1"
 
@@ -150,6 +151,8 @@ class Edit(QtGui.QDialog, ModelEdit):
 
         if self.end_time is not None:
             print "do Stuff4"
+
+        self.database.update("")
 
         # Close the dialog window
         self.accept()
