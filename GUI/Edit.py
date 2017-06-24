@@ -1,6 +1,7 @@
 from PyQt4 import QtCore, QtGui
 from ModelEdit import ModelEdit
 from Database import Database
+import time
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -26,13 +27,15 @@ class Edit(QtGui.QDialog, ModelEdit):
         super(Edit, self).__init__(parent)
         ModelEdit.__init__(self)
 
+        self.time_start = day_hours[0]
         time_start = day_hours[0]
         time_lunch = day_hours[1]
         time_after_lunch = day_hours[2]
         time_end = day_hours[3]
 
-        row_id = day_hours[4]
-        print row_id
+        self.row_id = day_hours[4]
+
+        self.day = str(time_start).split()[0]
 
         self.database = Database()
 
@@ -140,19 +143,31 @@ class Edit(QtGui.QDialog, ModelEdit):
         self.end_time = "%s:%s:%s" % (hour_value, minute_value, seconds_value)
 
     def submit(self):
-        if self.start_time is not None:
-            print "do stuff1"
+        pattern = '%d-%m-%Y %H:%M:%S'
 
         if self.lunch_time is not None:
-            print "do Stuff2"
+            lunch_time = self.day + " " + self.lunch_time
+            epoch = int(time.mktime(time.strptime(lunch_time, pattern)))
+            self.database.update('UPDATE buddy SET LunchTime="%s", LunchTimeEpoch="%s" WHERE Id="%s"' %
+                                 (lunch_time, epoch, self.row_id))
+            self.database.save()
 
         if self.after_lunch_time is not None:
-            print "do Stuff3"
+            after_lunch_time = self.day + " " + self.after_lunch_time
+            epoch = int(time.mktime(time.strptime(after_lunch_time, pattern)))
+            self.database.update('UPDATE buddy SET StartAfterLunch="%s", StartAfterLunchEpoch="%s" WHERE Id="%s"' %
+                                 (after_lunch_time, epoch, self.row_id))
+            self.database.save()
 
         if self.end_time is not None:
-            print "do Stuff4"
-
-        self.database.update("")
+            end_time = self.day + " " + self.end_time
+            epoch = int(time.mktime(time.strptime(end_time, pattern)))
+            start_epoch = int(time.mktime(time.strptime(self.time_start, pattern)))
+            total = int(start_epoch) - int(epoch)
+            self.database.update('UPDATE buddy SET EndWorkTime="%s", EndWorkEpoch="%s" WHERE Id="%s"' %
+                                 (end_time, epoch, self.row_id))
+            self.database.update('UPDATE buddt SET Total="total ')
+            self.database.save()
 
         # Close the dialog window
         self.accept()
