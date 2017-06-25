@@ -166,7 +166,7 @@ class Edit(QtGui.QDialog, ModelEdit):
             total = int(start_epoch) - int(epoch)
             self.database.update('UPDATE buddy SET EndWorkTime="%s", EndWorkEpoch="%s" WHERE Id="%s"' %
                                  (end_time, epoch, self.row_id))
-            self.database.update('UPDATE buddt SET Total="total ')
+            self.database.update('UPDATE buddy SET Total="%s" WHERE Id="%s"' % (total, self.row_id))
             self.database.save()
 
         # Close the dialog window
