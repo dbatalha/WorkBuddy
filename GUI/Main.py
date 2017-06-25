@@ -176,6 +176,9 @@ class Window(QtGui.QMainWindow, ModelWindow):
         self.actionExit.triggered.connect(self.close_application)
         self.actionAbout.triggered.connect(self.display_about)
         self.actionExport.triggered.connect(self.export)
+        # View menu items
+        self.actionCompact.triggered.connect(self.set_compact_view)
+        self.actionFull.triggered.connect(self.set_full_view)
 
         # Buddy main instance
         self.buddy_main = Work()
@@ -351,6 +354,17 @@ class Window(QtGui.QMainWindow, ModelWindow):
 
         if warning.event_action is True:
             sys.exit()
+
+    def set_compact_view(self):
+        self.last_work_days.hide()
+        self.centralwidget.setMinimumSize(QtCore.QSize(600, 100))
+        self.setMaximumSize(600, 143)
+        self.resize(600, 143)
+
+    def set_full_view(self):
+        self.last_work_days.show()
+        self.centralwidget.setMinimumSize(QtCore.QSize(944, 616))
+        self.resize(944, 663)
 
     def changeEvent(self, event):
         """
