@@ -5,6 +5,7 @@ from Buddy import Export
 from About import About
 from Warning import Warning
 from Edit import Edit
+from CreatePoject import CreateProject
 from ModelMain import ModelWindow
 import sys
 import os.path
@@ -179,6 +180,8 @@ class Window(QtGui.QMainWindow, ModelWindow):
         # View menu items
         self.actionCompact.triggered.connect(self.set_compact_view)
         self.actionFull.triggered.connect(self.set_full_view)
+        # Project menu items
+        self.actionCreate.triggered.connect(self.create_project)
 
         # Buddy main instance
         self.buddy_main = Work()
@@ -365,6 +368,11 @@ class Window(QtGui.QMainWindow, ModelWindow):
         self.last_work_days.show()
         self.centralwidget.setMinimumSize(QtCore.QSize(944, 616))
         self.resize(944, 663)
+
+    @ staticmethod
+    def create_project():
+        create = CreateProject()
+        create.exec_()
 
     def changeEvent(self, event):
         """
