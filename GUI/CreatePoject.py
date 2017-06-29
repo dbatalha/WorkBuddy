@@ -1,5 +1,6 @@
 from PyQt4 import QtCore, QtGui
 from ModelCreateProject import ModelCreatePoject
+from Buddy import Projects
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -25,8 +26,20 @@ class CreateProject(QtGui.QDialog, ModelCreatePoject):
         super(CreateProject, self).__init__(parent)
         ModelCreatePoject.__init__(self)
 
-        self.retranslateUi(self)
+        self.projects = Projects()
+
+        QtCore.QObject.connect(self.submit_project, QtCore.SIGNAL(_fromUtf8("clicked()")), self.create_project)
         QtCore.QMetaObject.connectSlotsByName(self)
+
+        self.retranslateUi(self)
+
+    def create_project(self):
+        project = self.project_name.text()
+        self.projects.create_data_project()
+
+        self.projects.add_project(project)
+
+        self.accept()
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Create Project", None))
