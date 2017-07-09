@@ -5,6 +5,7 @@ from Buddy import Export
 from About import About
 from Warning import Warning
 from Edit import Edit
+from Projects import Projects
 from CreatePoject import CreateProject
 from ModelMain import ModelWindow
 import sys
@@ -182,6 +183,7 @@ class Window(QtGui.QMainWindow, ModelWindow):
         self.actionFull.triggered.connect(self.set_full_view)
         # Project menu items
         self.actionCreate.triggered.connect(self.create_project)
+        self.actionProjects.triggered.connect(self.projects)
 
         # Buddy main instance
         self.buddy_main = Work()
@@ -373,6 +375,11 @@ class Window(QtGui.QMainWindow, ModelWindow):
     def create_project():
         create = CreateProject()
         create.exec_()
+
+    @ staticmethod
+    def projects():
+        projects = Projects()
+        projects.exec_()
 
     def changeEvent(self, event):
         """

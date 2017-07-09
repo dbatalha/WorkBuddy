@@ -1,7 +1,7 @@
 from Database import Database
 
 
-class Projects(object):
+class ProjectsFlow(object):
     def __init__(self):
         self.database = Database()
 
