@@ -26,7 +26,7 @@ class CreateProject(QtGui.QDialog, ModelCreatePoject):
         super(CreateProject, self).__init__(parent)
         ModelCreatePoject.__init__(self)
 
-        self.create_project = ProjectsFlow()
+        self.flow_create_project = ProjectsFlow()
 
         QtCore.QObject.connect(self.submit_project, QtCore.SIGNAL(_fromUtf8("clicked()")), self.create_project)
         QtCore.QMetaObject.connectSlotsByName(self)
@@ -35,9 +35,9 @@ class CreateProject(QtGui.QDialog, ModelCreatePoject):
 
     def create_project(self):
         project = self.project_name.text()
-        self.create_project.create_data_project()
+        self.flow_create_project.create_data_project()
 
-        self.create_project.add_project(project)
+        self.flow_create_project.add_project(project)
 
         self.accept()
 
