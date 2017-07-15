@@ -13,3 +13,10 @@ class ProjectsFlow(object):
         self.database.insert("INSERT INTO projects (Project) VALUES ('%s')" % project_name)
 
         self.database.save()
+
+    def get_all_data(self):
+        data = self.database.select("SELECT * FROM projects")
+
+        self.database.save()
+
+        return data

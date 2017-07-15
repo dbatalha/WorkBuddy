@@ -26,7 +26,30 @@ class Projects(QtGui.QDialog, ModelProjects):
         super(Projects, self).__init__(parent)
         ModelProjects.__init__(self)
 
+        self.projects_flow = ProjectsFlow()
+
+        self.projects_view.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.projects_view.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.projects_view.setColumnCount(3)
+        self.projects_view.verticalHeader().setVisible(False)
+        self.projects_view.setHorizontalHeaderItem(0, QtGui.QTableWidgetItem("Name"))
+        self.projects_view.setHorizontalHeaderItem(1, QtGui.QTableWidgetItem("Client"))
+        self.projects_view.setHorizontalHeaderItem(2, QtGui.QTableWidgetItem("Status"))
+
+        self.write_projects_table()
+
         self.retranslateUi(self)
+
+    def write_projects_table(self):
+        projects = self.projects_flow.get_all_data()
+
+        self.projects_view.setRowCount(len(projects))
+
+        row_counter = 0
+        for project in projects:
+            self.projects_view.setItem(row_counter, 0, QtGui.QTableWidgetItem(str(project[1])))
+
+            row_counter += 1
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Projects", None))
