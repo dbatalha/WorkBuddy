@@ -1,26 +1,18 @@
-from Connection import Connection
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 
-class Database(Connection):
+class Database(object):
     def __init__(self):
         super(Database, self).__init__()
 
-    def create(self, statement):
-        Connection.create(self, statement)
+        engine = create_engine('sqlite:///data.db')
 
-    def insert(self, statement):
-        Connection.insert(self, statement)
+        session_maker = sessionmaker(bind=engine)
+        self.session = session_maker()
 
-    def update(self, statement):
-        Connection.update(self, statement)
+    def create(self, table):
+        self.session.add(table)
 
-    def select(self, statement):
-        data = Connection.select(self, statement)
-
-        return data
-
-    def save(self):
-        Connection.save(self)
-
-    def close(self):
-        Connection.close(self)
+    def commit(self):
+        self.session.commit()

@@ -1,8 +1,8 @@
 from Timer import Time
 from Database import Database
 from StateMachine import StateMachine
+from Database import BuddyTable
 
-# App imports
 import getpass
 
 __author__ = 'Daniel Batalha'
@@ -16,10 +16,11 @@ class Work(object):
 
         self.start_day_time = None
 
+        # Initialize buddy
+        self.buddy = None
+
     def create_data(self):
-        self.database.create("CREATE TABLE IF NOT EXISTS buddy (Id INTEGER PRIMARY KEY AUTOINCREMENT, StartWorkTime,"
-                             " StartWorkEpoch INT, LunchTime, LunchTimeEpoch INT, EndWorkTime, EndWorkEpoch INT, "
-                             "StartAfterLunch, StartAfterLunchEpoch INT, Total, Username, Tasks)")
+        print "No"
 
     def state(self):
         return self.state_machine_instance.get_state()
@@ -31,10 +32,10 @@ class Work(object):
         start_work_time_epoch = int(time.actual())
         start_work_time = time.date_time_format(start_work_time_epoch)
 
-        self.database.insert("INSERT INTO buddy (StartWorkTime, StartWorkEpoch, Username)VALUES ('%s', '%d', '%s')"
-                             % (start_work_time, start_work_time_epoch, username))
+        self.buddy = BuddyTable(start_work_time, start_work_time_epoch, username)
 
-        self.database.save()
+        self.database.create(self.buddy)
+        self.database.commit()
 
         self.start_day_time = start_work_time_epoch
 
@@ -48,10 +49,14 @@ class Work(object):
         launch_work_time_epoch = int(time.actual())
         launch_work_time = time.date_time_format(launch_work_time_epoch)
 
-        self.database.update("UPDATE buddy SET LunchTime='%s', LunchTimeEpoch='%d' WHERE StartWorkEpoch='%d'"
-                             % (launch_work_time, launch_work_time_epoch, self.start_day_time))
+        self.database.session.query(BuddyTable).filter_by(StartWorkEpoch=self.start_day_time).update(
+            {
+                "LunchTime": launch_work_time,
+                "LunchTimeEpoch": launch_work_time_epoch
+            })
 
-        self.database.save()
+        self.database.create(self.buddy)
+        self.database.commit()
 
         # Report status to state machine
         self.state_machine_instance.run("Launch")
@@ -63,10 +68,13 @@ class Work(object):
         start_after_launch_work_time_epoch = int(time.actual())
         start_after_launch_work_time = time.date_time_format(start_after_launch_work_time_epoch)
 
-        self.database.update("UPDATE buddy SET StartAfterLunch='%s', StartAfterLunchEpoch='%d' WHERE StartWorkEpoch='%d'"
-                             % (start_after_launch_work_time, start_after_launch_work_time_epoch, self.start_day_time))
+        self.database.session.query(BuddyTable).filter_by(StartWorkEpoch=self.start_day_time).update(
+            {
+                "StartAfterLunch": start_after_launch_work_time,
+                "StartAfterLunchEpoch": start_after_launch_work_time_epoch
+            })
 
-        self.database.save()
+        self.database.commit()
 
         # Report status to state machine
         self.state_machine_instance.run("After_Launch")
@@ -79,12 +87,14 @@ class Work(object):
 
         total = int(end_launch_work_time_epoch) - int(self.start_day_time)
 
-        self.database.update("UPDATE buddy SET EndWorkTime='%s', EndWorkEpoch='%d' WHERE StartWorkEpoch='%d'"
-                             % (end_launch_work_time, end_launch_work_time_epoch, self.start_day_time))
+        self.database.session.query(BuddyTable).filter_by(StartWorkEpoch=self.start_day_time).update(
+            {
+                "EndWorkTime": end_launch_work_time,
+                "EndWorkEpoch": end_launch_work_time_epoch,
+                "Total": total
+            })
 
-        self.database.update("UPDATE buddy SET Total='%d' WHERE StartWorkEpoch='%d'" % (total, self.start_day_time))
-
-        self.database.save()
+        self.database.commit()
 
         # Report status to state machine
         self.state_machine_instance.run("Void")

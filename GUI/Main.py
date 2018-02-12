@@ -185,7 +185,7 @@ class Window(QtGui.QMainWindow, ModelWindow):
         self.actionCreate.triggered.connect(self.create_project)
         self.actionProjects.triggered.connect(self.projects)
 
-        # Buddy main instance
+        # BuddyTable.py main instance
         self.buddy_main = Work()
 
         # Write data to status bar, this is the database file and file size.
@@ -274,44 +274,44 @@ class Window(QtGui.QMainWindow, ModelWindow):
             header = self.last_work_days.horizontalHeader()
 
             # Add ID to GUI table
-            self.last_work_days.setItem(row_counter, 7, QtGui.QTableWidgetItem(str(row[0])))
+            self.last_work_days.setItem(row_counter, 7, QtGui.QTableWidgetItem(str(row.Id)))
             header.setResizeMode(7, QtGui.QHeaderView.ResizeToContents)
 
             # Add username to GUI table
-            self.last_work_days.setItem(row_counter, 5, QtGui.QTableWidgetItem(row[10]))
+            self.last_work_days.setItem(row_counter, 5, QtGui.QTableWidgetItem(row.Username))
             header.setResizeMode(5, QtGui.QHeaderView.ResizeToContents)
 
             # Add Total, this value could be empty (None).
-            if row[9] is not None:
-                self.last_work_days.setItem(row_counter, 4, QtGui.QTableWidgetItem(row[9]))
+            if row.Total is not None:
+                self.last_work_days.setItem(row_counter, 4, QtGui.QTableWidgetItem(row.Total))
             else:
                 self.last_work_days.setItem(row_counter, 4, QtGui.QTableWidgetItem("EMPTY"))
             header.setResizeMode(4, QtGui.QHeaderView.ResizeToContents)
 
             # Add end work time in date format to GUI table.
-            if row[5] is not None:
-                self.last_work_days.setItem(row_counter, 3, QtGui.QTableWidgetItem(row[5]))
+            if row.EndWorkTime is not None:
+                self.last_work_days.setItem(row_counter, 3, QtGui.QTableWidgetItem(row.EndWorkTime))
             else:
                 self.last_work_days.setItem(row_counter, 3, QtGui.QTableWidgetItem("EMPTY"))
             header.setResizeMode(3, QtGui.QHeaderView.ResizeToContents)
 
             # Add after lunch time in date format to GUI table.
-            if row[7] is not None:
-                self.last_work_days.setItem(row_counter, 2, QtGui.QTableWidgetItem(row[7]))
+            if row.StartAfterLunch is not None:
+                self.last_work_days.setItem(row_counter, 2, QtGui.QTableWidgetItem(row.StartAfterLunch))
             else:
                 self.last_work_days.setItem(row_counter, 2, QtGui.QTableWidgetItem("EMPTY"))
             header.setResizeMode(2, QtGui.QHeaderView.ResizeToContents)
 
             # Add lunch time in date format to GUI table.
-            if row[3] is not None:
-                self.last_work_days.setItem(row_counter, 1, QtGui.QTableWidgetItem(row[3]))
+            if row.LunchTime is not None:
+                self.last_work_days.setItem(row_counter, 1, QtGui.QTableWidgetItem(row.LunchTime))
             else:
                 self.last_work_days.setItem(row_counter, 1, QtGui.QTableWidgetItem("EMPTY"))
             header.setResizeMode(1, QtGui.QHeaderView.ResizeToContents)
 
             # Add start work time in date format to GUI table.
-            if row[1] is not None:
-                self.last_work_days.setItem(row_counter, 0, QtGui.QTableWidgetItem(row[1]))
+            if row.StartWorkTime is not None:
+                self.last_work_days.setItem(row_counter, 0, QtGui.QTableWidgetItem(row.StartWorkTime))
             else:
                 self.last_work_days.setItem(row_counter, 0, QtGui.QTableWidgetItem("EMPTY"))
             header.setResizeMode(0, QtGui.QHeaderView.ResizeToContents)

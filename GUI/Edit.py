@@ -1,6 +1,7 @@
 from PyQt4 import QtCore, QtGui
 from ModelEdit import ModelEdit
 from Database import Database
+from Database import BuddyTable
 import time
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -148,26 +149,41 @@ class Edit(QtGui.QDialog, ModelEdit):
         if self.lunch_time is not None:
             lunch_time = self.day + " " + self.lunch_time
             epoch = int(time.mktime(time.strptime(lunch_time, pattern)))
-            self.database.update('UPDATE buddy SET LunchTime="%s", LunchTimeEpoch="%s" WHERE Id="%s"' %
-                                 (lunch_time, epoch, self.row_id))
-            self.database.save()
+
+            self.database.session.query(BuddyTable).filter_by(Id=int(self.row_id)).update(
+                {
+                    "LunchTime": lunch_time,
+                    "LunchTimeEpoch": epoch
+                })
+
+            self.database.commit()
 
         if self.after_lunch_time is not None:
             after_lunch_time = self.day + " " + self.after_lunch_time
             epoch = int(time.mktime(time.strptime(after_lunch_time, pattern)))
-            self.database.update('UPDATE buddy SET StartAfterLunch="%s", StartAfterLunchEpoch="%s" WHERE Id="%s"' %
-                                 (after_lunch_time, epoch, self.row_id))
-            self.database.save()
+
+            self.database.session.query(BuddyTable).filter_by(Id=int(self.row_id)).update(
+                {
+                    "StartAfterLunch": after_lunch_time,
+                    "StartAfterLunchEpoch": epoch
+                })
+
+            self.database.commit()
 
         if self.end_time is not None:
             end_time = self.day + " " + self.end_time
             epoch = int(time.mktime(time.strptime(end_time, pattern)))
             start_epoch = int(time.mktime(time.strptime(self.time_start, pattern)))
             total = int(start_epoch) - int(epoch)
-            self.database.update('UPDATE buddy SET EndWorkTime="%s", EndWorkEpoch="%s" WHERE Id="%s"' %
-                                 (end_time, epoch, self.row_id))
-            self.database.update('UPDATE buddy SET Total="%s" WHERE Id="%s"' % (total, self.row_id))
-            self.database.save()
+
+            self.database.session.query(BuddyTable).filter_by(Id=int(self.row_id)).update(
+                {
+                    "EndWorkTime": end_time,
+                    "EndWorkEpoch": epoch,
+                    "Total": total
+                })
+
+            self.database.commit()
 
         # Close the dialog window
         self.accept()

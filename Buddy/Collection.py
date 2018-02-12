@@ -1,4 +1,5 @@
 from Database import Database
+from Database import BuddyTable
 
 __author__ = 'Daniel Batalha'
 
@@ -8,9 +9,7 @@ class Collection(object):
         self.database = Database()
 
     def get_all_data(self):
-        data = self.database.select("select * from buddy")
+        data = self.database.session.query(BuddyTable).all()
 
-        # Close database.
-        self.database.save()
-        self.database.close()
+        self.database.commit()
         return data
