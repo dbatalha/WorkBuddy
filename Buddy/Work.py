@@ -91,7 +91,7 @@ class Work(object):
             {
                 "EndWorkTime": end_launch_work_time,
                 "EndWorkEpoch": end_launch_work_time_epoch,
-                "Total": total
+                "Total": int(total)
             })
 
         self.database.commit()

@@ -283,7 +283,7 @@ class Window(QtGui.QMainWindow, ModelWindow):
 
             # Add Total, this value could be empty (None).
             if row.Total is not None:
-                self.last_work_days.setItem(row_counter, 4, QtGui.QTableWidgetItem(row.Total))
+                self.last_work_days.setItem(row_counter, 4, QtGui.QTableWidgetItem(str(row.Total)))
             else:
                 self.last_work_days.setItem(row_counter, 4, QtGui.QTableWidgetItem("EMPTY"))
             header.setResizeMode(4, QtGui.QHeaderView.ResizeToContents)
