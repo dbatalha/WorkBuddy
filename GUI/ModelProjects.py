@@ -24,7 +24,7 @@ class ModelProjects(object):
         self.setObjectName(_fromUtf8("Projects"))
         self.resize(433, 268)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("../GUI/Icons/Actions-dialog-ok-icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("GUI/Icons/Actions-dialog-ok-icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.setWindowIcon(icon)
         self.verticalLayout = QtGui.QVBoxLayout(self)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))

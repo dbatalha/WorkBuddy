@@ -10,11 +10,23 @@ class ProjectsFlow(object):
         """
         Create new project
         :param project_name:
+        :param project_status:
         :return:
         """
         project_table = ProjectsTable(project_name, project_status)
 
         self.database.create(project_table)
+        self.database.commit()
+
+    def project_status(self, project, status):
+        """
+        Status is INT 0 represent disable 1 represent enable
+
+        :param project:
+        :param status:
+        :return:
+        """
+        self.database.session.query(ProjectsTable).filter_by(Project=project).update({"Status": status})
         self.database.commit()
 
     def get_all_data(self):

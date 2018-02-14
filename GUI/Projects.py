@@ -41,6 +41,9 @@ class Projects(QtGui.QDialog, ModelProjects):
 
         self.retranslateUi(self)
 
+    def _get_all_projects(self):
+        return self.projects_flow.get_all_data()
+
     def contextMenuEvent(self, event):
         self.context_menu = QtGui.QMenu(self)
         activate_deactivate = QtGui.QAction('Activate/Deactivate', self)
@@ -51,11 +54,22 @@ class Projects(QtGui.QDialog, ModelProjects):
         self.context_menu.popup(QtGui.QCursor.pos())
 
     def activate_deactivate_project(self):
+        projects = self._get_all_projects()
+
+        project = projects[self.projects_view.currentRow()].Project
+
+        if projects[self.projects_view.currentRow()].Status is 0:
+            # Currently deactivated, activate
+            self.projects_flow.project_status(project, 1)
+
+        else:
+            # Currently enable, deactivate
+            self.projects_flow.project_status(project, 0)
 
         self.write_projects_table()
 
     def write_projects_table(self):
-        projects = self.projects_flow.get_all_data()
+        projects = self._get_all_projects()
 
         self.projects_view.setRowCount(len(projects))
 

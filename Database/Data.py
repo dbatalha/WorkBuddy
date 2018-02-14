@@ -8,12 +8,6 @@ class Database(object):
 
         engine = create_engine('sqlite:///data.db')
 
-        if not engine.dialect.has_table(engine, "projects"):
-            print True
-
-        else:
-            print False
-
         session_maker = sessionmaker(bind=engine)
         self.session = session_maker()
 
