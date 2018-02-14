@@ -47,7 +47,17 @@ class Projects(QtGui.QDialog, ModelProjects):
 
         row_counter = 0
         for project in projects:
+            # Project name header
             self.projects_view.setItem(row_counter, 0, QtGui.QTableWidgetItem(str(project.Project)))
+
+            # Status header
+            if project.Status is 1:
+                display_status = "Active"
+
+            else:
+                display_status = "Disable"
+
+            self.projects_view.setItem(row_counter, 2, QtGui.QTableWidgetItem(str(display_status)))
 
             row_counter += 1
 

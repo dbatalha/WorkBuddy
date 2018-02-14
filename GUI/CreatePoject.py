@@ -34,10 +34,14 @@ class CreateProject(QtGui.QDialog, ModelCreatePoject):
         self.retranslateUi(self)
 
     def create_project(self):
+        """
+        Create project
+        The default status of the project is active
+        :return:
+        """
         project = self.project_name.text()
-        #self.flow_create_project.create_data_project()
 
-        self.flow_create_project.add_project(str(project))
+        self.flow_create_project.add_project(str(project), True)
         self.accept()
 
     def retranslateUi(self, Dialog):

@@ -17,5 +17,11 @@ class ProjectsTable(Base):
 
     Team = Column(String())
 
-    def __init__(self, project_name):
+    def __init__(self, project_name, project_status):
         self.Project = project_name
+
+        status = 0
+        if project_status:
+            status = 1
+
+        self.Status = status
