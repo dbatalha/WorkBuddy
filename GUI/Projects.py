@@ -83,7 +83,7 @@ class Projects(QtGui.QDialog, ModelProjects):
                 display_status = "Active"
 
             else:
-                display_status = "Disable"
+                display_status = "Disabled"
 
             self.projects_view.setItem(row_counter, 2, QtGui.QTableWidgetItem(str(display_status)))
 
