@@ -47,7 +47,7 @@ class Projects(QtGui.QDialog, ModelProjects):
 
         row_counter = 0
         for project in projects:
-            self.projects_view.setItem(row_counter, 0, QtGui.QTableWidgetItem(str(project[1])))
+            self.projects_view.setItem(row_counter, 0, QtGui.QTableWidgetItem(str(project.Project)))
 
             row_counter += 1
 
