@@ -30,15 +30,29 @@ class Projects(QtGui.QDialog, ModelProjects):
 
         self.projects_view.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
         self.projects_view.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
-        self.projects_view.setColumnCount(3)
+        self.projects_view.setColumnCount(4)
         self.projects_view.verticalHeader().setVisible(False)
         self.projects_view.setHorizontalHeaderItem(0, QtGui.QTableWidgetItem("Name"))
         self.projects_view.setHorizontalHeaderItem(1, QtGui.QTableWidgetItem("Client"))
         self.projects_view.setHorizontalHeaderItem(2, QtGui.QTableWidgetItem("Status"))
+        self.projects_view.setHorizontalHeaderItem(3, QtGui.QTableWidgetItem("Team"))
 
         self.write_projects_table()
 
         self.retranslateUi(self)
+
+    def contextMenuEvent(self, event):
+        self.context_menu = QtGui.QMenu(self)
+        activate_deactivate = QtGui.QAction('Activate/Deactivate', self)
+        team = QtGui.QAction('Assign to team...', self)
+        activate_deactivate.triggered.connect(self.activate_deactivate_project)
+        self.context_menu.addAction(activate_deactivate)
+        self.context_menu.addAction(team)
+        self.context_menu.popup(QtGui.QCursor.pos())
+
+    def activate_deactivate_project(self):
+
+        self.write_projects_table()
 
     def write_projects_table(self):
         projects = self.projects_flow.get_all_data()
