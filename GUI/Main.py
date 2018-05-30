@@ -7,6 +7,7 @@ from Warning import Warning
 from Edit import Edit
 from Projects import Projects
 from CreatePoject import CreateProject
+from CreateTask import CreateTask
 from ModelMain import ModelWindow
 import sys
 import os.path
@@ -184,6 +185,8 @@ class Window(QtGui.QMainWindow, ModelWindow):
         # Project menu items
         self.actionCreate.triggered.connect(self.create_project)
         self.actionProjects.triggered.connect(self.projects)
+        # Tasks menu items
+        self.actionCreate_2.triggered.connect(self.create_task)
 
         # BuddyTable.py main instance
         self.buddy_main = Work()
@@ -380,6 +383,11 @@ class Window(QtGui.QMainWindow, ModelWindow):
     def projects():
         projects = Projects()
         projects.exec_()
+
+    @ staticmethod
+    def create_task():
+        create_task = CreateTask()
+        create_task.exec_()
 
     def changeEvent(self, event):
         """

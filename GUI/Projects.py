@@ -57,8 +57,9 @@ class Projects(QtGui.QDialog, ModelProjects):
         projects = self._get_all_projects()
 
         project = projects[self.projects_view.currentRow()].Project
+        status = projects[self.projects_view.currentRow()].Status
 
-        if projects[self.projects_view.currentRow()].Status is 0:
+        if status is 0:
             # Currently deactivated, activate
             self.projects_flow.project_status(project, 1)
 
