@@ -1,6 +1,8 @@
 from PyQt4 import QtCore, QtGui
 from ModelProjects import ModelProjects
 from Buddy import ProjectsFlow
+from Warning import Warning
+from CreatePoject import CreateProject
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -44,14 +46,54 @@ class Projects(QtGui.QDialog, ModelProjects):
     def _get_all_projects(self):
         return self.projects_flow.get_all_data()
 
+
+
     def contextMenuEvent(self, event):
         self.context_menu = QtGui.QMenu(self)
+        create_project = QtGui.QAction('New', self)
         activate_deactivate = QtGui.QAction('Activate/Deactivate', self)
         team = QtGui.QAction('Assign to team...', self)
+        delete = QtGui.QAction('Delete Project', self)
         activate_deactivate.triggered.connect(self.activate_deactivate_project)
+        delete.triggered.connect(self.delete_project)
+        create_project.triggered.connect(self.create_new)
+        self.context_menu.addAction(create_project)
         self.context_menu.addAction(activate_deactivate)
         self.context_menu.addAction(team)
+        self.context_menu.addAction(delete)
         self.context_menu.popup(QtGui.QCursor.pos())
+
+    def create_new(self):
+        """
+        Create new project
+        :return:
+        """
+        new = CreateProject()
+        new.exec_()
+        self.write_projects_table()
+
+    def delete_project(self):
+        """
+        Delete selected project.
+        To delete the project it must be disabled first
+        :return:
+        """
+        projects = self._get_all_projects()
+
+        project_id = projects[self.projects_view.currentRow()].Id
+        project_status = projects[self.projects_view.currentRow()].Status
+
+        if project_status is 0:
+            warning = Warning(
+                "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">"
+                "Unable delete project. "
+                "Make sure the project is disabled"
+                "</span></p></body></html>"
+            )
+            warning.exec_()
+        else:
+            self.projects_flow.delete_project(project_id)
+            self.write_projects_table()
 
     def activate_deactivate_project(self):
         projects = self._get_all_projects()

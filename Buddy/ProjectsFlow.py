@@ -29,6 +29,15 @@ class ProjectsFlow(object):
         self.database.session.query(ProjectsTable).filter_by(Project=project).update({"Status": status})
         self.database.commit()
 
+    def delete_project(self, project_id):
+        """
+        Delete project
+        :param project_id:
+        :return:
+        """
+        self.database.session.query(ProjectsTable).filter_by(Id=project_id).delete()
+        self.database.commit()
+
     def get_all_data(self):
         data = self.database.session.query(ProjectsTable).all()
         self.database.commit()
