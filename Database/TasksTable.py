@@ -9,7 +9,15 @@ class TasksTable(Base):
 
     Id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
 
-    Task = Column(String())
+    Name = Column(String())
+
+    StartDate = Column(Integer())
+
+    EndDate = Column(Integer())
+
+    Status = Column(String())
+
+    Assignee = Column(String())
 
     Project = Column(Integer())
 

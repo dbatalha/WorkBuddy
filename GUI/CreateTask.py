@@ -28,10 +28,22 @@ class CreateTask(QtGui.QDialog, ModelCreateTask):
 
         self.flow_create_task = TasksFlow()
 
+        self.project_assign()
+
         QtCore.QObject.connect(self.submit_task, QtCore.SIGNAL(_fromUtf8("clicked()")), self.create_task)
         QtCore.QMetaObject.connectSlotsByName(self)
 
         self.retranslateUi(self)
+
+    def project_assign(self):
+        """
+        Defining the project assigned
+        :return:
+        """
+        projects = self.flow_create_task.get_projects()
+
+        for project in projects:
+            print project
 
     def create_task(self):
         """
