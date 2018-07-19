@@ -26,6 +26,7 @@ class CreateTask(QtGui.QDialog, ModelCreateTask):
         super(CreateTask, self).__init__(parent)
         ModelCreateTask.__init__(self)
 
+        self.projects = list()
         self.flow_create_task = TasksFlow()
 
         self.project_assign()
@@ -43,8 +44,11 @@ class CreateTask(QtGui.QDialog, ModelCreateTask):
         projects = self.flow_create_task.get_projects()
 
         for project in projects:
-            self.associated_project.addItem(project.Project)
+            project_map = dict()
+            project_map.update({"Project": project.Project, "Id": project.Id})
+            self.projects.append(project_map)
 
+            self.associated_project.addItem(project.Project)
 
     def create_task(self):
         """
@@ -54,7 +58,13 @@ class CreateTask(QtGui.QDialog, ModelCreateTask):
         """
         task = self.task_name.text()
 
-        self.flow_create_task.add_task(str(task), 1)
+        selected_project_id = None
+
+        for project in self.projects:
+            if self.associated_project.currentText() == project.get("Project"):
+                selected_project_id = project.get("Id")
+
+        self.flow_create_task.add_task(str(task), 1, selected_project_id)
         self.accept()
 
     def retranslateUi(self, Dialog):

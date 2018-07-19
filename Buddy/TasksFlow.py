@@ -7,14 +7,15 @@ class TasksFlow(object):
     def __init__(self):
         self.database = Database()
 
-    def add_task(self, task_name, task_status):
+    def add_task(self, task_name, task_status, task_project):
         """
         Create new task
         :param task_name:
         :param task_status:
+        :param task_project:
         :return:
         """
-        tasks_table = TasksTable(task_name, task_status)
+        tasks_table = TasksTable(task_name, task_project)
 
         self.database.create(tasks_table)
         self.database.commit()

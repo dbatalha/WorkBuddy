@@ -22,5 +22,5 @@ class TasksTable(Base):
     Project = Column(Integer())
 
     def __init__(self, task, project):
-        self.Task = task
+        self.Name = task
         self.Project = project
