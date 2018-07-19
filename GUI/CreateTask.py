@@ -43,7 +43,8 @@ class CreateTask(QtGui.QDialog, ModelCreateTask):
         projects = self.flow_create_task.get_projects()
 
         for project in projects:
-            print project
+            self.associated_project.addItem(project.Project)
+
 
     def create_task(self):
         """
