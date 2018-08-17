@@ -1,5 +1,6 @@
 from PyQt4 import QtCore, QtGui
 from ModelTasks import ModelTasks
+from Buddy import ProjectsFlow
 from Buddy import TasksFlow
 from Warning import Warning
 from CreatePoject import CreateProject
@@ -29,10 +30,11 @@ class Tasks(QtGui.QDialog, ModelTasks):
         ModelTasks.__init__(self)
 
         self.tasks_flow = TasksFlow()
+        self.projects_flow = ProjectsFlow()
 
         self.tasks_view.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
         self.tasks_view.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
-        self.tasks_view.setColumnCount(4)
+        self.tasks_view.setColumnCount(6)
         self.tasks_view.verticalHeader().setVisible(False)
         self.tasks_view.setHorizontalHeaderItem(0, QtGui.QTableWidgetItem("Name"))
         self.tasks_view.setHorizontalHeaderItem(1, QtGui.QTableWidgetItem("StartDate"))
@@ -45,9 +47,11 @@ class Tasks(QtGui.QDialog, ModelTasks):
 
         self.retranslateUi(self)
 
-    def _get_all_projects(self):
+    def _get_all_tasks(self):
         return self.tasks_flow.get_all_data()
 
+    def _get_all_projects(self):
+        return self.projects_flow.get_all_data()
 
     def contextMenuEvent(self, event):
         self.context_menu = QtGui.QMenu(self)
@@ -112,27 +116,40 @@ class Tasks(QtGui.QDialog, ModelTasks):
 
         self.write_tasks_table()
 
-    def write_tasks_table(self):
+    def get_project(self, project_id):
+        """
+        Defining the project assigned
+        :return:
+        """
         projects = self._get_all_projects()
 
-        self.projects_view.setRowCount(len(projects))
+        for project in projects:
+            if project.Id is project_id:
+                return project.Project
+
+
+    def write_tasks_table(self):
+        tasks = self._get_all_tasks()
+
+        self.tasks_view.setRowCount(len(tasks))
 
         row_counter = 0
-        for project in projects:
+        for task in tasks:
             # Project name header
-            self.projects_view.setItem(row_counter, 0, QtGui.QTableWidgetItem(str(project.Project)))
+            self.tasks_view.setItem(row_counter, 0, QtGui.QTableWidgetItem(str(task.Name)))
+            self.tasks_view.setItem(row_counter, 5, QtGui.QTableWidgetItem(str(self.get_project(task.Project))))
 
             # Status header
-            if project.Status is 1:
+            if task.Status is 1:
                 display_status = "Active"
 
             else:
                 display_status = "Disabled"
 
-            self.projects_view.setItem(row_counter, 2, QtGui.QTableWidgetItem(str(display_status)))
+            self.tasks_view.setItem(row_counter, 2, QtGui.QTableWidgetItem(str(display_status)))
 
             row_counter += 1
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "Projects", None))
+        Dialog.setWindowTitle(_translate("Dialog", "Tasks", None))
         ModelTasks.retranslateUi(self, Dialog)

@@ -37,6 +37,12 @@ class TasksFlow(object):
 
         return projects
 
+    def get_tasks(self):
+        tasks = self.database.session.query(TasksTable).all()
+        self.database.commit()
+
+        return tasks
+
     def get_all_data(self):
         data = self.database.session.query(TasksTable).all()
         self.database.commit()

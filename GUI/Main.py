@@ -6,6 +6,7 @@ from About import About
 from Warning import Warning
 from Edit import Edit
 from Projects import Projects
+from Tasks import Tasks
 from CreatePoject import CreateProject
 from CreateTask import CreateTask
 from ModelMain import ModelWindow
@@ -184,9 +185,11 @@ class Window(QtGui.QMainWindow, ModelWindow):
         self.actionFull.triggered.connect(self.set_full_view)
         # Project menu items
         self.actionCreate.triggered.connect(self.create_project)
-        self.actionProjects.triggered.connect(self.projects)
+        self.actionProjects.triggered.connect(self.window_projects)
+
         # Tasks menu items
         self.actionCreate_2.triggered.connect(self.create_task)
+        self.actionTasks.triggered.connect(self.window_tasks)
 
         # BuddyTable.py main instance
         self.buddy_main = Work()
@@ -194,14 +197,26 @@ class Window(QtGui.QMainWindow, ModelWindow):
         # Write data to status bar, this is the database file and file size.
         self.statusbar.showMessage("Click on button Start Day")
 
-        # Tray icon application
-        self.tray_icon = None
-
         # Initialize the context menu for QWidget table.
         self.context_menu = None
 
+        # Tray icon application
+        self.tray_icon = None
+        self.tray_icon = TrayIcon(QtGui.QIcon("GUI/Icons/main.png"), self)
+
     def ui_translate(self, main_window):
         ModelWindow.ui_translate(self, main_window)
+
+    def show_message_show_hide_tray(self, title, message):
+        """
+        Show and hide and display message in the toast format
+        :param title:
+        :param message:
+        :return:
+        """
+        self.tray_icon.show()
+        self.tray_icon.showMessage(title, message)
+        self.tray_icon.hide()
 
     def buddy_action(self):
         if self.buddy_main.state() == "Void":
@@ -210,6 +225,7 @@ class Window(QtGui.QMainWindow, ModelWindow):
             self.buddy_main.start()
             self._update_watch.update_watch_status(True)
             self.statusbar.showMessage("Currently on morning shift")
+            self.show_message_show_hide_tray("Workbuddy - Status Update", "Currently on morning shift")
 
             self.start.setText("Launch")
 
@@ -218,6 +234,7 @@ class Window(QtGui.QMainWindow, ModelWindow):
             self.buddy_main.launch()
             self._update_watch.pause_watch(False)
             self.statusbar.showMessage("Finally lunch time")
+            self.show_message_show_hide_tray("Workbuddy - Status Update", "Finally lunch time")
 
             self.start.setText("Start After Launch")
 
@@ -225,6 +242,7 @@ class Window(QtGui.QMainWindow, ModelWindow):
             self.buddy_main.return_from_launch()
             self._update_watch.pause_watch(True)
             self.statusbar.showMessage("Currently on afternoon shift")
+            self.show_message_show_hide_tray("Workbuddy - Status Update", "Currently on afternoon shift")
 
             self.start.setText("End Day")
 
@@ -380,9 +398,14 @@ class Window(QtGui.QMainWindow, ModelWindow):
         create.exec_()
 
     @ staticmethod
-    def projects():
+    def window_projects():
         projects = Projects()
         projects.exec_()
+
+    @ staticmethod
+    def window_tasks():
+        tasks = Tasks()
+        tasks.exec_()
 
     @ staticmethod
     def create_task():
@@ -400,7 +423,6 @@ class Window(QtGui.QMainWindow, ModelWindow):
             if self.windowState() == QtCore.Qt.WindowMinimized:
                 self.hide()
 
-                self.tray_icon = TrayIcon(QtGui.QIcon("GUI/Icons/main.png"), self)
                 self.tray_icon.show()
                 self.tray_icon.showMessage("WorkBuddy is running in background!",
                                            "Double click on Icon to activate the Window.")

@@ -1,4 +1,5 @@
 from PyQt4 import QtCore, QtGui
+from PyQt4.QtGui import *
 from ModelCreateTask import ModelCreateTask
 from Buddy import TasksFlow
 try:

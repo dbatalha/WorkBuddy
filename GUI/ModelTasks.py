@@ -24,7 +24,8 @@ class ModelTasks(object):
         self.setObjectName(_fromUtf8("Tasks"))
         self.resize(433, 268)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("GUI/Icons/Actions-view-pim-tasks-icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("GUI/Icons/Actions-view-pim-tasks-icon.png")), QtGui.QIcon.Normal,
+                       QtGui.QIcon.Off)
         self.setWindowIcon(icon)
         self.verticalLayout = QtGui.QVBoxLayout(self)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
@@ -38,15 +39,15 @@ class ModelTasks(object):
         self.verticalLayout.addLayout(self.gridLayout)
         self.buttonBox = QtGui.QDialogButtonBox(self)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel | QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.verticalLayout.addWidget(self.buttonBox)
 
         self.retranslateUi(self)
-
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), self.accept)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), self.reject)
         QtCore.QMetaObject.connectSlotsByName(self)
 
     def retranslateUi(self, Projects):
         Projects.setWindowTitle(_translate("Tasks", "Tasks", None))
+
