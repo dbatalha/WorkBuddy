@@ -3,7 +3,7 @@ from ModelTasks import ModelTasks
 from Buddy import ProjectsFlow
 from Buddy import TasksFlow
 from Warning import Warning
-from CreatePoject import CreateProject
+from CreateTask import CreateTask
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -55,16 +55,17 @@ class Tasks(QtGui.QDialog, ModelTasks):
 
     def contextMenuEvent(self, event):
         self.context_menu = QtGui.QMenu(self)
-        create_project = QtGui.QAction('New', self)
-        activate_deactivate = QtGui.QAction('Activate/Deactivate', self)
-        team = QtGui.QAction('Assign to team...', self)
-        delete = QtGui.QAction('Delete Project', self)
-        activate_deactivate.triggered.connect(self.activate_deactivate_project)
+        create_task = QtGui.QAction('New', self)
+        set_task_done = QtGui.QAction('Set task to Done', self)
+        set_task_in_progress = QtGui.QAction('Set task to In Progress', self)
+        delete = QtGui.QAction('Delete Task', self)
+        set_task_done.triggered.connect(self.set_task_done)
+        set_task_in_progress.triggered.connect(self.set_task_in_progress)
         delete.triggered.connect(self.delete_project)
-        create_project.triggered.connect(self.create_new)
-        self.context_menu.addAction(create_project)
-        self.context_menu.addAction(activate_deactivate)
-        self.context_menu.addAction(team)
+        create_task.triggered.connect(self.create_new)
+        self.context_menu.addAction(create_task)
+        self.context_menu.addAction(set_task_done)
+        self.context_menu.addAction(set_task_in_progress)
         self.context_menu.addAction(delete)
         self.context_menu.popup(QtGui.QCursor.pos())
 
@@ -73,7 +74,7 @@ class Tasks(QtGui.QDialog, ModelTasks):
         Create new project
         :return:
         """
-        new = CreateProject()
+        new = CreateTask()
         new.exec_()
         self.write_tasks_table()
 
@@ -83,43 +84,57 @@ class Tasks(QtGui.QDialog, ModelTasks):
         To delete the project it must be disabled first
         :return:
         """
-        projects = self._get_all_projects()
+        tasks = self._get_all_tasks()
 
-        project_id = projects[self.projects_view.currentRow()].Id
-        project_status = projects[self.projects_view.currentRow()].Status
+        task_id = tasks[self.tasks_view.currentRow()].Id
+        task_status = tasks[self.tasks_view.currentRow()].Status
 
-        if project_status is 0:
+        if task_status is 0:
             warning = Warning(
                 "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">"
-                "Unable delete project. "
-                "Make sure the project is disabled"
+                "Unable delete Task. "
+                "Make sure the Task is Done"
                 "</span></p></body></html>"
             )
             warning.exec_()
         else:
-            self.tasks_flow.delete_project(project_id)
+            self.tasks_flow.delete_task(task_id)
             self.write_tasks_table()
 
-    def activate_deactivate_project(self):
-        projects = self._get_all_projects()
+    def set_task_done(self):
+        """
+        Set selected task as Done
+        :return:
+        """
 
-        project = projects[self.projects_view.currentRow()].Project
-        status = projects[self.projects_view.currentRow()].Status
+        tasks = self._get_all_tasks()
 
-        if status is 0:
-            # Currently deactivated, activate
-            self.tasks_flow.tasks_status(project, 1)
+        task_id = tasks[self.tasks_view.currentRow()].Id
 
-        else:
-            # Currently enable, deactivate
-            self.tasks_flow.tasks_status(project, 0)
+        self.tasks_flow.set_status(task_id, 0)
 
+        # Refresh the table
+        self.write_tasks_table()
+
+    def set_task_in_progress(self):
+        """
+        Set selected task as in progress
+        :return:
+        """
+
+        tasks = self._get_all_tasks()
+
+        task_id = tasks[self.tasks_view.currentRow()].Id
+
+        self.tasks_flow.set_status(task_id, 1)
+
+        # Refresh the table
         self.write_tasks_table()
 
     def get_project(self, project_id):
         """
-        Defining the project assigned
-        :return:
+        Get the project name by project ID
+        :return: Return the project name if match the input project ID
         """
         projects = self._get_all_projects()
 
@@ -127,8 +142,11 @@ class Tasks(QtGui.QDialog, ModelTasks):
             if project.Id is project_id:
                 return project.Project
 
-
     def write_tasks_table(self):
+        """
+        Draw the main table
+        :return:
+        """
         tasks = self._get_all_tasks()
 
         self.tasks_view.setRowCount(len(tasks))
@@ -140,13 +158,18 @@ class Tasks(QtGui.QDialog, ModelTasks):
             self.tasks_view.setItem(row_counter, 5, QtGui.QTableWidgetItem(str(self.get_project(task.Project))))
 
             # Status header
-            if task.Status is 1:
-                display_status = "Active"
+            if task.Status is None:
+                task.Status = int(0)
+
+            if int(task.Status) is 1:
+                # TODO need translation
+                display_status = "In Progress"
 
             else:
-                display_status = "Disabled"
+                # TODO need translation
+                display_status = "Done"
 
-            self.tasks_view.setItem(row_counter, 2, QtGui.QTableWidgetItem(str(display_status)))
+            self.tasks_view.setItem(row_counter, 3, QtGui.QTableWidgetItem(str(display_status)))
 
             row_counter += 1
 

@@ -20,15 +20,14 @@ class TasksFlow(object):
         self.database.create(tasks_table)
         self.database.commit()
 
-    def tasks_status(self, tasks, status):
+    def set_status(self, task, status):
         """
-        Status is INT 0 represent disable 1 represent enable
-
-        :param tasks:
-        :param status:
+        Set the task status Done or In Progress
+        :param task: the Id of the task
+        :param status: Status of the task
         :return:
         """
-        self.database.session.query(TasksTable).filter_by(Project=tasks).update({"Status": status})
+        self.database.session.query(TasksTable).filter_by(Id=task).update({"Status": status})
         self.database.commit()
 
     def get_projects(self):
@@ -36,6 +35,15 @@ class TasksFlow(object):
         self.database.commit()
 
         return projects
+
+    def delete_task(self, task_id):
+        """
+        Delete task
+        :param task_id:
+        :return:
+        """
+        self.database.session.query(TasksTable).filter_by(Id=task_id).delete()
+        self.database.commit()
 
     def get_tasks(self):
         tasks = self.database.session.query(TasksTable).all()
