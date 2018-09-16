@@ -172,6 +172,7 @@ class Window(QtGui.QMainWindow, ModelWindow):
         QtCore.QObject.connect(self.start, QtCore.SIGNAL(_fromUtf8("clicked()")), self.buddy_action)
         QtCore.QObject.connect(self.export_xls, QtCore.SIGNAL(_fromUtf8("clicked()")), self.export)
         QtCore.QObject.connect(self.refress_work_days, QtCore.SIGNAL(_fromUtf8("clicked()")), self.update_table)
+        QtCore.QObject.connect(self.tasks, QtCore.SIGNAL(_fromUtf8("clicked()")), self.tasks_main)
         QtCore.QMetaObject.connectSlotsByName(self)
 
         self.start.clicked.connect(self._update_watch.start)
@@ -367,6 +368,11 @@ class Window(QtGui.QMainWindow, ModelWindow):
     def export():
         export = Export()
         export.export_csv()
+
+    @ staticmethod
+    def tasks_main():
+        tasks = Tasks()
+        tasks.exec_()
 
     @ staticmethod
     def close_application():
