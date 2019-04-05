@@ -1,4 +1,6 @@
 from PyQt4 import QtCore, QtGui
+
+from Buddy.Timer import Time
 from ModelTasks import ModelTasks
 from Buddy import ProjectsFlow
 from Buddy import TasksFlow
@@ -34,7 +36,7 @@ class Tasks(QtGui.QDialog, ModelTasks):
 
         self.tasks_view.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
         self.tasks_view.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
-        self.tasks_view.setColumnCount(6)
+        self.tasks_view.setColumnCount(7)
         self.tasks_view.verticalHeader().setVisible(False)
         self.tasks_view.setHorizontalHeaderItem(0, QtGui.QTableWidgetItem("Name"))
         self.tasks_view.setHorizontalHeaderItem(1, QtGui.QTableWidgetItem("StartDate"))
@@ -42,6 +44,7 @@ class Tasks(QtGui.QDialog, ModelTasks):
         self.tasks_view.setHorizontalHeaderItem(3, QtGui.QTableWidgetItem("Status"))
         self.tasks_view.setHorizontalHeaderItem(4, QtGui.QTableWidgetItem("Assignee"))
         self.tasks_view.setHorizontalHeaderItem(5, QtGui.QTableWidgetItem("Project"))
+        self.tasks_view.setHorizontalHeaderItem(6, QtGui.QTableWidgetItem("Description"))
 
         self.write_tasks_table()
 
@@ -71,7 +74,7 @@ class Tasks(QtGui.QDialog, ModelTasks):
 
     def create_new(self):
         """
-        Create new project
+        Create new task
         :return:
         """
         new = CreateTask()
@@ -80,7 +83,7 @@ class Tasks(QtGui.QDialog, ModelTasks):
 
     def delete_project(self):
         """
-        Delete selected project.
+        Delete selected task.
         To delete the project it must be disabled first
         :return:
         """
@@ -153,8 +156,22 @@ class Tasks(QtGui.QDialog, ModelTasks):
 
         row_counter = 0
         for task in tasks:
+
+            end_time = None
+            start_time = None
+
+            # Convert to display data
+            if task.StartDate is not None:
+                start_time = Time.date_time_format(int(task.StartDate))
+
+            if task.EndDate is not None:
+                end_time = Time.date_time_format(int(task.EndDate))
+
             # Project name header
             self.tasks_view.setItem(row_counter, 0, QtGui.QTableWidgetItem(str(task.Name)))
+            self.tasks_view.setItem(row_counter, 1, QtGui.QTableWidgetItem(str(start_time)))
+            self.tasks_view.setItem(row_counter, 2, QtGui.QTableWidgetItem(str(end_time)))
+            self.tasks_view.setItem(row_counter, 4, QtGui.QTableWidgetItem(str(task.Assignee)))
             self.tasks_view.setItem(row_counter, 5, QtGui.QTableWidgetItem(str(self.get_project(task.Project))))
 
             # Status header
@@ -170,6 +187,9 @@ class Tasks(QtGui.QDialog, ModelTasks):
                 display_status = "Done"
 
             self.tasks_view.setItem(row_counter, 3, QtGui.QTableWidgetItem(str(display_status)))
+
+            if task.Description is not None:
+                self.tasks_view.setItem(row_counter, 6, QtGui.QTableWidgetItem(task.Description))
 
             row_counter += 1
 

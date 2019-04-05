@@ -1,9 +1,8 @@
+import WorkSystem
 from Timer import Time
 from Database import Database
 from StateMachine import StateMachine
 from Database import BuddyTable
-
-import getpass
 
 __author__ = 'Daniel Batalha'
 
@@ -26,7 +25,7 @@ class Work(object):
         return self.state_machine_instance.get_state()
 
     def start(self):
-        username = str(getpass.getuser())
+        username = str(WorkSystem.WorkSystem.get_system_username())
 
         time = Time()
         start_work_time_epoch = int(time.actual())

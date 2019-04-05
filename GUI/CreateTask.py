@@ -65,7 +65,9 @@ class CreateTask(QtGui.QDialog, ModelCreateTask):
             if self.associated_project.currentText() == project.get("Project"):
                 selected_project_id = project.get("Id")
 
-        self.flow_create_task.add_task(str(task), 1, selected_project_id)
+        description = self.task_description.toPlainText()
+
+        self.flow_create_task.add_task(str(task), 1, selected_project_id, description)
         self.accept()
 
     def retranslateUi(self, Dialog):

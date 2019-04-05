@@ -21,6 +21,8 @@ class TasksTable(Base):
 
     Project = Column(Integer())
 
+    Description = Column(String())
+
     def __init__(self, task, project):
         self.Name = task
         self.Project = project
