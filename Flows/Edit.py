@@ -1,5 +1,5 @@
 from PyQt4 import QtCore, QtGui
-from ModelEdit import ModelEdit
+from GUI.ModelEdit import ModelEdit
 from Database import Database
 from Database import BuddyTable
 import time

@@ -1,7 +1,7 @@
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import *
-from ModelCreateTask import ModelCreateTask
-from Buddy import TasksFlow
+from GUI.ModelViewTask import ModelViewTask
+from Core import TasksFlow
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -22,17 +22,19 @@ except AttributeError:
 __author__ = 'Daniel Batalha'
 
 
-class CreateTask(QtGui.QDialog, ModelCreateTask):
+class ViewTask(QtGui.QDialog, ModelViewTask):
     def __init__(self, parent=None):
-        super(CreateTask, self).__init__(parent)
-        ModelCreateTask.__init__(self)
+        super(ViewTask, self).__init__(parent)
+        ModelViewTask.__init__(self)
 
         self.projects = list()
         self.flow_create_task = TasksFlow()
 
         self.project_assign()
 
-        QtCore.QObject.connect(self.submit_task, QtCore.SIGNAL(_fromUtf8("clicked()")), self.create_task)
+        self.task_name.setText("")
+
+        QtCore.QObject.connect(self.update_task, QtCore.SIGNAL(_fromUtf8("clicked()")), self.view_task)
         QtCore.QMetaObject.connectSlotsByName(self)
 
         self.retranslateUi(self)
@@ -51,14 +53,11 @@ class CreateTask(QtGui.QDialog, ModelCreateTask):
 
             self.associated_project.addItem(project.Project)
 
-    def create_task(self):
+    def view_task(self):
         """
-        Create project
-        The default status of the project is active
+        View task
         :return:
         """
-        task = self.task_name.text()
-
         selected_project_id = None
 
         for project in self.projects:
@@ -67,9 +66,9 @@ class CreateTask(QtGui.QDialog, ModelCreateTask):
 
         description = self.task_description.toPlainText()
 
-        self.flow_create_task.add_task(str(task), 1, selected_project_id, description)
+        #self.flow_create_task.add_task(str(task), 1, selected_project_id, description)
         self.accept()
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "Create Task", None))
-        ModelCreateTask.retranslateUi(self, Dialog)
+        Dialog.setWindowTitle(_translate("Dialog", "View Task", None))
+        ModelViewTask.retranslateUi(self, Dialog)

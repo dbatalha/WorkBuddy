@@ -1,7 +1,7 @@
 from PyQt4 import QtCore, QtGui
-from ModelProjects import ModelProjects
-from Buddy import ProjectsFlow
-from Warning import Warning
+from GUI.ModelProjects import ModelProjects
+from Core import ProjectsFlow
+from Flows.Warning import Warning
 from CreatePoject import CreateProject
 try:
     _fromUtf8 = QtCore.QString.fromUtf8

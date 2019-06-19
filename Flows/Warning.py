@@ -1,5 +1,5 @@
 from PyQt4 import QtCore, QtGui
-from ModelWarning import ModelWarning
+from GUI.ModelWarning import ModelWarning
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:

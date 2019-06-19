@@ -1,11 +1,12 @@
 from PyQt4 import QtCore, QtGui
 
-from Buddy.Timer import Time
-from ModelTasks import ModelTasks
-from Buddy import ProjectsFlow
-from Buddy import TasksFlow
-from Warning import Warning
+from Core.Timer import Time
+from GUI.ModelTasks import ModelTasks
+from Core import ProjectsFlow
+from Core import TasksFlow
+from Flows.Warning import Warning
 from CreateTask import CreateTask
+from Core.ViewTask import ViewTask
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -59,14 +60,17 @@ class Tasks(QtGui.QDialog, ModelTasks):
     def contextMenuEvent(self, event):
         self.context_menu = QtGui.QMenu(self)
         create_task = QtGui.QAction('New', self)
-        set_task_done = QtGui.QAction('Set task to Done', self)
-        set_task_in_progress = QtGui.QAction('Set task to In Progress', self)
-        delete = QtGui.QAction('Delete Task', self)
+        view_task = QtGui.QAction('View', self)
+        set_task_done = QtGui.QAction('Set to Done', self)
+        set_task_in_progress = QtGui.QAction('Set to In Progress', self)
+        delete = QtGui.QAction('Delete', self)
         set_task_done.triggered.connect(self.set_task_done)
+        view_task.triggered.connect(self.view_task)
         set_task_in_progress.triggered.connect(self.set_task_in_progress)
         delete.triggered.connect(self.delete_project)
         create_task.triggered.connect(self.create_new)
         self.context_menu.addAction(create_task)
+        self.context_menu.addAction(view_task)
         self.context_menu.addAction(set_task_done)
         self.context_menu.addAction(set_task_in_progress)
         self.context_menu.addAction(delete)
@@ -78,6 +82,15 @@ class Tasks(QtGui.QDialog, ModelTasks):
         :return:
         """
         new = CreateTask()
+        new.exec_()
+        self.write_tasks_table()
+
+    def view_task(self):
+        """
+        Create new task
+        :return:
+        """
+        new = ViewTask()
         new.exec_()
         self.write_tasks_table()
 

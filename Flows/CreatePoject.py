@@ -1,6 +1,8 @@
 from PyQt4 import QtCore, QtGui
-from ModelCreateProject import ModelCreatePoject
-from Buddy import ProjectsFlow
+
+from Core.TrayIcon import TrayIcon
+from GUI.ModelCreateProject import ModelCreatePoject
+from Core import ProjectsFlow
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -31,6 +33,10 @@ class CreateProject(QtGui.QDialog, ModelCreatePoject):
         QtCore.QObject.connect(self.submit_project, QtCore.SIGNAL(_fromUtf8("clicked()")), self.create_project)
         QtCore.QMetaObject.connectSlotsByName(self)
 
+        # Tray icon application
+        self.tray_icon = None
+        self.tray_icon = TrayIcon(self)
+
         self.retranslateUi(self)
 
     def create_project(self):
@@ -41,8 +47,14 @@ class CreateProject(QtGui.QDialog, ModelCreatePoject):
         """
         project = self.project_name.text()
 
-        self.flow_create_project.add_project(str(project), True)
+        self.flow_create_project.add_project(str(project).encode('utf-8'), True)
         self.accept()
+
+        # TODO : add to translation
+        title = "Projects Flow"
+        message = str(project) + " created."
+
+        self.tray_icon.display_message(title, message)
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Create Project", None))

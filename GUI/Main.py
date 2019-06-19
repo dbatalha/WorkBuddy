@@ -1,15 +1,16 @@
 from PyQt4 import QtCore, QtGui
-from Buddy import Work
-from Buddy import Collection
-from Buddy import Export
-from About import About
-from Warning import Warning
-from Edit import Edit
-from Projects import Projects
-from Tasks import Tasks
-from CreatePoject import CreateProject
-from CreateTask import CreateTask
+from Core import Work
+from Core import Collection
+from Core import Export
+from Flows.About import About
+from Flows.Warning import Warning
+from Flows.Edit import Edit
+from Flows.Projects import Projects
+from Flows.Tasks import Tasks
+from Flows.CreatePoject import CreateProject
+from Flows.CreateTask import CreateTask
 from ModelMain import ModelWindow
+from Core.TrayIcon import TrayIcon
 import sys
 import os.path
 import time
@@ -31,27 +32,6 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 __author__ = 'Daniel Batalha'
-
-
-class TrayIcon(QtGui.QSystemTrayIcon):
-    def __init__(self, icon, parent=None):
-        QtGui.QSystemTrayIcon.__init__(self, icon, parent)
-        context_menu = QtGui.QMenu(parent)
-        restore_action = context_menu.addAction("Restore")
-        self.setContextMenu(context_menu)
-        self.restore_trigger = False
-        restore_action.triggered.connect(self.restore)
-
-        # Activate window, on double click
-        self.activated.connect(self.restore)
-
-        # Define parent window
-        self.parent_window = parent
-
-    def restore(self):
-        self.restore_trigger = True
-        self.parent_window.show()
-        self.hide()
 
 
 class UpdateWatch(QtCore.QThread):
@@ -203,7 +183,7 @@ class Window(QtGui.QMainWindow, ModelWindow):
 
         # Tray icon application
         self.tray_icon = None
-        self.tray_icon = TrayIcon(QtGui.QIcon("GUI/Icons/main.png"), self)
+        self.tray_icon = TrayIcon(self)
 
     def ui_translate(self, main_window):
         ModelWindow.ui_translate(self, main_window)
@@ -215,9 +195,7 @@ class Window(QtGui.QMainWindow, ModelWindow):
         :param message:
         :return:
         """
-        self.tray_icon.show()
-        self.tray_icon.showMessage(title, message)
-        self.tray_icon.hide()
+        self.tray_icon.display_message(title, message)
 
     def buddy_action(self):
         if self.buddy_main.state() == "Void":
@@ -257,6 +235,7 @@ class Window(QtGui.QMainWindow, ModelWindow):
             self._update_watch.update_watch_status(False)
             self.label.setText("<html><head/><body><p align=\"center\">HH:MM:SS</p></body></html>")
             self.statusbar.showMessage("Click on button Start Day")
+            self.show_message_show_hide_tray("Workbuddy - Status Update", "End day")
 
         else:
             raise ValueError("Invalid Option")
