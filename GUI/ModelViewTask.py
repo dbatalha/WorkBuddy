@@ -22,7 +22,7 @@ __author__ = 'Daniel Batalha'
 class ModelViewTask(object):
     def __init__(self):
         self.setObjectName(_fromUtf8("Dialog"))
-        self.resize(749, 449)
+        self.resize(754, 446)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("GUI/Icons/Actions-document-new-icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.setWindowIcon(icon)
@@ -46,9 +46,6 @@ class ModelViewTask(object):
         self.update_task = QtGui.QPushButton(self)
         self.update_task.setGeometry(QtCore.QRect(650, 410, 94, 33))
         self.update_task.setObjectName(_fromUtf8("update_task"))
-
-        self.retranslateUi(self)
-        QtCore.QMetaObject.connectSlotsByName(self)
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Create Task", None))

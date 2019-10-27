@@ -41,14 +41,11 @@ class ViewTask(QtGui.QDialog, ModelViewTask):
         self.retranslateUi(self)
 
     def write_task_screen(self):
-        task_id = self.task_data.get("Id")
         task_name = self.task_data.get("Name")
         task_description = self.task_data.get("Description")
 
-
         self.task_name.setText(task_name)
         self.task_description.setText(task_description)
-
 
     def project_assign(self):
         """
@@ -73,18 +70,17 @@ class ViewTask(QtGui.QDialog, ModelViewTask):
 
     def view_task(self):
         """
-        View task
+        View task, this method update the task with new values set by user.
         :return:
         """
-        selected_project_id = None
-
+        project_id = None
+        task_id = self.task_data.get("Id")
         for project in self.projects:
-            if self.associated_project.currentText() == project.get("Project"):
-                selected_project_id = project.get("Id")
+            if project.get("Project") == str(self.associated_project.currentText()):
+                project_id = project.get("Id")
 
-        description = self.task_description.toPlainText()
+        self.flow_task.update_task(int(task_id), self.task_name.text(), self.task_description.toPlainText(), project_id)
 
-        #self.flow_create_task.add_task(str(task), 1, selected_project_id, description)
         self.accept()
 
     def retranslateUi(self, Dialog):

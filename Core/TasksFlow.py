@@ -63,6 +63,14 @@ class TasksFlow(object):
         self.database.session.query(TasksTable).filter_by(Id=task).update({"Description": str(description)})
         self.database.commit()
 
+    def set_task_name(self, task, name):
+        self.database.session.query(TasksTable).filter_by(Id=task).update({"Name": str(name)})
+        self.database.commit()
+
+    def set_task_project(self, task, project):
+        self.database.session.query(TasksTable).filter_by(Id=task).update({"Project": int(project)})
+        self.database.commit()
+
     def get_projects(self):
         tasks = self.database.session.query(ProjectsTable).all()
         self.database.commit()
@@ -77,6 +85,19 @@ class TasksFlow(object):
         """
         self.database.session.query(TasksTable).filter_by(Id=task_id).delete()
         self.database.commit()
+
+    def update_task(self, task, name, description, project):
+        """
+        Set project name description and project.
+        :param task:
+        :param name:
+        :param description:
+        :param project:
+        :return:
+        """
+        self.set_task_name(task, name)
+        self.set_task_description(task, description)
+        self.set_task_project(task, project)
 
     def get_tasks(self):
         tasks = self.database.session.query(TasksTable).all()

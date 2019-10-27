@@ -46,8 +46,6 @@ class Projects(QtGui.QDialog, ModelProjects):
     def _get_all_projects(self):
         return self.projects_flow.get_all_data()
 
-
-
     def contextMenuEvent(self, event):
         self.context_menu = QtGui.QMenu(self)
         create_project = QtGui.QAction('New', self)
