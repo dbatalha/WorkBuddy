@@ -8,6 +8,7 @@ from Flows.Edit import Edit
 from Flows.Projects import Projects
 from Flows.Tasks import Tasks
 from Flows.CreatePoject import CreateProject
+from Flows.CreateTeam import CreateTeam
 from Flows.CreateTask import CreateTask
 from ModelMain import ModelWindow
 from Core.TrayIcon import TrayIcon
@@ -171,6 +172,9 @@ class Window(QtGui.QMainWindow, ModelWindow):
         # Tasks menu items
         self.actionCreate_2.triggered.connect(self.create_task)
         self.actionTasks.triggered.connect(self.window_tasks)
+
+        # Teams menu
+        self.actionCreate_3.triggered.connect(self.create_teams)
 
         # BuddyTable.py main instance
         self.buddy_main = Work()
@@ -380,6 +384,11 @@ class Window(QtGui.QMainWindow, ModelWindow):
     @ staticmethod
     def create_project():
         create = CreateProject()
+        create.exec_()
+
+    @ staticmethod
+    def create_teams():
+        create = CreateTeam()
         create.exec_()
 
     @ staticmethod
