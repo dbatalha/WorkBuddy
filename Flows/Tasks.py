@@ -37,7 +37,7 @@ class Tasks(QtGui.QDialog, ModelTasks):
 
         self.tasks_view.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
         self.tasks_view.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
-        self.tasks_view.setColumnCount(7)
+        self.tasks_view.setColumnCount(8)
         self.tasks_view.verticalHeader().setVisible(False)
         self.tasks_view.setHorizontalHeaderItem(0, QtGui.QTableWidgetItem("Name"))
         self.tasks_view.setHorizontalHeaderItem(1, QtGui.QTableWidgetItem("StartDate"))
@@ -46,6 +46,9 @@ class Tasks(QtGui.QDialog, ModelTasks):
         self.tasks_view.setHorizontalHeaderItem(4, QtGui.QTableWidgetItem("Assignee"))
         self.tasks_view.setHorizontalHeaderItem(5, QtGui.QTableWidgetItem("Project"))
         self.tasks_view.setHorizontalHeaderItem(6, QtGui.QTableWidgetItem("Description"))
+        self.tasks_view.setHorizontalHeaderItem(7, QtGui.QTableWidgetItem("Id"))
+
+        self.tasks_view.setColumnHidden(7, True)
 
         self.write_tasks_table()
 
@@ -60,7 +63,7 @@ class Tasks(QtGui.QDialog, ModelTasks):
     def contextMenuEvent(self, event):
         self.context_menu = QtGui.QMenu(self)
         create_task = QtGui.QAction('New', self)
-        view_task = QtGui.QAction('View', self)
+        view_task = QtGui.QAction('View/Update', self)
         set_task_done = QtGui.QAction('Set to Done', self)
         set_task_in_progress = QtGui.QAction('Set to In Progress', self)
         delete = QtGui.QAction('Delete', self)
@@ -90,7 +93,16 @@ class Tasks(QtGui.QDialog, ModelTasks):
         Create new task
         :return:
         """
-        new = ViewTask()
+        task_id = self.tasks_view.item(self.tasks_view.currentRow(), 7)
+        task_name = self.tasks_view.item(self.tasks_view.currentRow(), 0)
+        task_description = self.tasks_view.item(self.tasks_view.currentRow(), 6)
+        task_project = self.tasks_view.item(self.tasks_view.currentRow(), 5)
+
+        tasks = dict()
+        tasks.update({"Name": task_name.text(), "Description": task_description.text(),
+                      "Id": task_id.text(), "Project": task_project})
+
+        new = ViewTask(tasks)
         new.exec_()
         self.write_tasks_table()
 
@@ -186,6 +198,8 @@ class Tasks(QtGui.QDialog, ModelTasks):
             self.tasks_view.setItem(row_counter, 2, QtGui.QTableWidgetItem(str(end_time)))
             self.tasks_view.setItem(row_counter, 4, QtGui.QTableWidgetItem(str(task.Assignee)))
             self.tasks_view.setItem(row_counter, 5, QtGui.QTableWidgetItem(str(self.get_project(task.Project))))
+            self.tasks_view.setItem(row_counter, 6, QtGui.QTableWidgetItem(str(task.Description)))
+            self.tasks_view.setItem(row_counter, 7, QtGui.QTableWidgetItem(str(task.Id)))
 
             # Status header
             if task.Status is None:
