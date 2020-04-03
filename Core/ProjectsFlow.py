@@ -39,6 +39,10 @@ class ProjectsFlow(object):
         self.database.commit()
 
     def get_all_data(self):
+        """
+        Get all data from the table projects.
+        :return:
+        """
         data = self.database.session.query(ProjectsTable).all()
         self.database.commit()
 

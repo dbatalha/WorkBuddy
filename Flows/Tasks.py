@@ -66,15 +66,21 @@ class Tasks(QtGui.QDialog, ModelTasks):
         view_task = QtGui.QAction('View/Update', self)
         set_task_done = QtGui.QAction('Set to Done', self)
         set_task_in_progress = QtGui.QAction('Set to In Progress', self)
+        set_task_not_started = QtGui.QAction('Set to Not Started', self)
+        set_task_forecast = QtGui.QAction('Set to Forecast', self)
         delete = QtGui.QAction('Delete', self)
         set_task_done.triggered.connect(self.set_task_done)
         view_task.triggered.connect(self.view_task)
         set_task_in_progress.triggered.connect(self.set_task_in_progress)
+        set_task_not_started.triggered.connect(self.set_task_not_started)
+        set_task_forecast.triggered.connect(self.set_task_forecast)
         delete.triggered.connect(self.delete_project)
         create_task.triggered.connect(self.create_new)
         self.context_menu.addAction(create_task)
         self.context_menu.addAction(view_task)
         self.context_menu.addAction(set_task_done)
+        self.context_menu.addAction(set_task_not_started)
+        self.context_menu.addAction(set_task_forecast)
         self.context_menu.addAction(set_task_in_progress)
         self.context_menu.addAction(delete)
         self.context_menu.popup(QtGui.QCursor.pos())
@@ -159,6 +165,36 @@ class Tasks(QtGui.QDialog, ModelTasks):
         # Refresh the table
         self.write_tasks_table()
 
+    def set_task_not_started(self):
+        """
+        Set selected task as not started backlog
+        :return:
+        """
+
+        tasks = self._get_all_tasks()
+
+        task_id = tasks[self.tasks_view.currentRow()].Id
+
+        self.tasks_flow.set_status(task_id, 2)
+
+        # Refresh the table
+        self.write_tasks_table()
+
+    def set_task_forecast(self):
+        """
+        Set selected task as forecast
+        :return:
+        """
+
+        tasks = self._get_all_tasks()
+
+        task_id = tasks[self.tasks_view.currentRow()].Id
+
+        self.tasks_flow.set_status(task_id, 3)
+
+        # Refresh the table
+        self.write_tasks_table()
+
     def get_project(self, project_id):
         """
         Get the project name by project ID
@@ -208,6 +244,12 @@ class Tasks(QtGui.QDialog, ModelTasks):
             if int(task.Status) is 1:
                 # TODO need translation
                 display_status = "In Progress"
+
+            elif int(task.Status) is 2:
+                display_status = "Not Started"
+
+            elif int(task.Status) is 3:
+                display_status = "Forecast"
 
             else:
                 # TODO need translation
